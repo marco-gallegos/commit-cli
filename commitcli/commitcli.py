@@ -65,27 +65,36 @@ class CommitMessage(object):
 
     
     def get_commit_string(self):
-        if self.format == "odoo" or self.format not in self.formats:
-            return f"[{self.tag}] {self.module}: {self.header}\n\n{self.body}"
+        if self.can_generate_string():
+            if self.format == "odoo" or self.format not in self.formats:
+                return f"[{self.tag}] {self.module}: {self.header}\n\n{self.body}"
         return None
 
 
     def set_answers(self, answers:dict):
-        self.tag = answers['tag']
-        self.module = answers['module']
-        self.header = answers['header']
-        self.body = answers['body']
+        if answers:
+            self.tag = answers['tag']
+            self.module = answers['module']
+            self.header = answers['header']
+            self.body = answers['body']
 
     
     def get_answers(self):
         answers = inquirer.prompt(self.questions[self.format])
-        self.set_answers(answers)
+        if answers:
+            self.set_answers(answers)
+
+    def can_generate_string(self):
+        if self.format == "odoo":
+            return self.tag and self.module and self.header and self.body
+        else:
+            return None
 
 
 
 def main()->bool:
     commit_msg = CommitMessage()
-    are_there_changes = os.system("git status --short -uno")
+    are_there_changes = os.system("git status --short -uno >> /dev/null")
     if are_there_changes == 32768:
         print("no existe un repositorio git")
         return False
@@ -94,13 +103,12 @@ def main()->bool:
         print("no hay cambios por ser rastreados")
         return False
     
-    
     commit_msg.get_answers()
     commit_string = commit_msg.get_commit_string()
 
-    
-
     if commit_string:
+        print("haciendo commit")
+        print("=="*20)
         os.system(f"git commit -m '{commit_string}'")
     
     return True
