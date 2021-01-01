@@ -1,17 +1,43 @@
 # Git Commmit Cli
 
-This project provides a cli to make git commits with the odoo format from a cli menu
+This project provides a cli to make git commits with the [odoo format](https://www.odoo.com/documentation/14.0/reference/guidelines.html#git) from a text wizard.
+
+## Instalation
+
+#### 1 - Install the package
+
+note : use sudo if the local (user) python bin dir is not in the path
+
+```shell
+sudo pip install commitcli
+```
+
+#### 2 - Enjoy
+
+Add files to commit
+
+```shell
+git add .
+```
 
 
+Use the tool
 
-## help
+```shell
+comitcli
+```
 
-using 
+## Development
+
+
+## Help
+
+using without install from the source 
 
 python -m commitcli
 
 
-and defining 
+and defining the __main__.py file
 
 
 ## References
