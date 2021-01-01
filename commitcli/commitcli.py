@@ -93,13 +93,19 @@ class CommitMessage(object):
 
 
 def main()->bool:
+    """Funcion que realiza un commit
+
+    Returns:
+        bool: estado de la ejecucion
+    """
     commit_msg = CommitMessage()
     are_there_changes = os.system("git status --short -uno >> /dev/null")
     if are_there_changes == 32768:
         print("no existe un repositorio git")
         return False
 
-    if are_there_changes != 0:
+    are_there_changes_output = os.popen("git diff --name-only --cached").read() #str with the output
+    if len(are_there_changes_output) == 0:
         print("no hay cambios por ser rastreados")
         return False
     
