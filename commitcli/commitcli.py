@@ -67,6 +67,7 @@ class CommitMessage(object):
     def get_commit_string(self):
         if self.format == "odoo" or self.format not in self.formats:
             return f"[{self.tag}] {self.module}: {self.header}\n\n{self.body}"
+        return None
 
 
     def set_answers(self, answers:dict):
@@ -82,10 +83,27 @@ class CommitMessage(object):
 
 
 
-def main():
+def main()->bool:
     commit_msg = CommitMessage()
+    are_there_changes = os.system("git status --short -uno")
+    if are_there_changes == 32768:
+        print("no existe un repositorio git")
+        return False
+
+    if are_there_changes != 0:
+        print("no hay cambios por ser rastreados")
+        return False
+    
+    
     commit_msg.get_answers()
-    os.system(f"git commit -m '{commit_msg.get_commit_string()}'")
+    commit_string = commit_msg.get_commit_string()
+
+    
+
+    if commit_string:
+        os.system(f"git commit -m '{commit_string}'")
+    
+    return True
 
 
 if __name__ == '__main__':
