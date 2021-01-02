@@ -1,6 +1,10 @@
 # Git Commmit Cli
 
-This project provides a cli to make git commits with the [odoo format](https://www.odoo.com/documentation/14.0/reference/guidelines.html#git) from a text wizard.
+This project provides a cli to make git commits with a minimized [odoo format](https://www.odoo.com/documentation/14.0/reference/guidelines.html#git) from a text wizard.
+
+Is a wrapper of the `git commit -m` command writed with 💟 on Python.
+
+This was tested on a raspbian and a fedora OS with the nvim and vim editor
 
 ## Instalation
 
@@ -26,6 +30,15 @@ Use the tool
 ```shell
 comitcli
 ```
+
+
+## Next Updates
+
+#### Formats
+
+- [ ]  semantic git commit [SGC](https://www.npmjs.com/package/semantic-git-commit-cli)
+- [ ]  full odoo tags
+
 
 ## Development
 
