@@ -11,13 +11,15 @@ with open("readme.md", "r") as fh:
 
 setuptools.setup(
     name="commitcli",
-    version="0.0.1",
+    version="1.0.0",
     author="Marco A. Gallegos",
     author_email="ma_galeza@hotmail.com",
-    description="commit cli for git with some formats",
+    description="commit cli for git with some formats, by default odoo format",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/marco-gallegos/commit-cli",
+    license="MIT",
+    keywords = "cli, ",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
