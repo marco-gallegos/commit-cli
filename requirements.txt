@@ -8,8 +8,6 @@ blessed==1.17.6
     # via inquirer
 inquirer==2.7.0
     # via -r requirements.in
-peewee==3.14.0
-    # via -r requirements.in
 python-editor==1.0.4
     # via inquirer
 readchar==2.0.1
