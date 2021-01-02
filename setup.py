@@ -1,7 +1,8 @@
 """
-@author Marco A. Gallegos
-@date 2020/03/10
-@description
+@Author Marco A. Gallegos
+@Date   2020/12/31
+@update 2020/12/31
+@Description
     archivo que describe el paquete distribuible
 """
 import setuptools
