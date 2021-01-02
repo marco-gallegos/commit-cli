@@ -15,7 +15,7 @@ setuptools.setup(
     version="1.0.0",
     author="Marco A. Gallegos",
     author_email="ma_galeza@hotmail.com",
-    description="commit cli for git with some formats, by default odoo format",
+    description="commit cli for git with some formats, by default short version of odoo format",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/marco-gallegos/commit-cli",
@@ -30,7 +30,6 @@ setuptools.setup(
     python_requires='>=3.6',
     install_requires=[
         'inquirer',
-        'peewee'
     ],
     # hacer que setup tools genere un comando cli
     entry_points={
