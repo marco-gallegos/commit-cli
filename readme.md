@@ -31,11 +31,20 @@ Use the tool
 comitcli
 ```
 
+### Example
+
+#### Odoo (default)
+
+![ejemplo de imagen](./static/img/example.png)
+
 
 ## Next Updates
 
 #### Formats
 
+- [ ] config manager using ~/.comirclirc file
+- [ ]  conventional commits [CC](https://www.conventionalcommits.org/en/v1.0.0/)
+  - [tags](https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional)  
 - [ ]  semantic git commit [SGC](https://www.npmjs.com/package/semantic-git-commit-cli)
 - [ ]  full odoo tags
 
