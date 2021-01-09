@@ -11,11 +11,6 @@ import re, distutils.util
 
 
 class ConfigManager(object):
-    """
-
-    Args:
-        object ([type]): [description]
-    """
     def __init__(self, file:str='.commitclirc', config:Configuration=None):
         self._file = file
         self.config = config
@@ -25,15 +20,35 @@ class ConfigManager(object):
 
 
     def current_file(self)->str:
+        """this function return the fullpath of the file to store
+        the configuration
+
+        :return: string with the full path of the file to
+        :rtype: str
+        """
         return f"{pathlib.Path.home()}/{self._file}"
     
 
     def exist_file(self)->bool:
+        """this function returns a boolean value on true if the file
+        to store the configuration
+
+        :return: if the file exists on the filesystem
+        :rtype: bool
+        """
         exist = os.path.exists(self.current_file())
         return True if exist else False
 
 
     def stringline_to_key_value(self, string_line:str="#comentario")->str:
+        """This functions returns the separated values by '=' of a string in 
+        format 'some=other'
+
+        :param string_line: a string in fomat 'some=other', defaults to "#comentario"
+        :type string_line: str, optional
+        :return: the values on left and right side of the '=' character
+        :rtype: str, str
+        """
         key, value = None, None
         match = re.fullmatch(self.pattern_regex_clave_valor, string_line)
         if match and type(string_line) == str and string_line:
@@ -44,6 +59,11 @@ class ConfigManager(object):
 
 
     def load_file(self)->dict:
+        """Method to convert the configuration file into a dictionary
+
+        :return: dictionary with al the key value files in thee file
+        :rtype: dict
+        """
         if self.exist_file():
             data_dict = {}
             file= open(self.current_file(), 'r')
@@ -63,6 +83,11 @@ class ConfigManager(object):
 
     
     def save_file(self)->bool:
+        """Method to save the current configuration into the configured file
+
+        :return: True
+        :rtype: bool
+        """
         file= open(self.current_file(), 'w')
         file.write(self.config.get_configuration_file_string())
         file.close()
@@ -70,6 +95,12 @@ class ConfigManager(object):
 
 
     def init_config(self)->bool:
+        """Method to initialize the class, triggering the load of the file or load
+        creating a defaul config and save it on the file.
+
+        :return: boolean representing the previous existence of the config file
+        :rtype: bool
+        """
         if self.exist_file():
             data = self.load_file()
             #print(data)
