@@ -8,13 +8,14 @@
 """
 import os
 from commitcli.commit_message import CommitMessage
+from configmanager.config_manager import ConfigManager
 
 
 def main()->bool:
-    """Funcion que realiza un commit
+    """Funcion para realizar el commit
 
-    Returns:
-        bool: estado de la ejecucion
+    :return: estado de la ejecucion
+    :rtype: bool
     """
     commit_msg = CommitMessage()
     are_there_changes = os.system("git status --short -uno >> /dev/null")
@@ -32,7 +33,7 @@ def main()->bool:
 
     if commit_string:
         print("haciendo commit")
-        print("=="*20)
+        print("=="*30)
         os.system(f"git commit -m '{commit_string}'")
     
     return True
