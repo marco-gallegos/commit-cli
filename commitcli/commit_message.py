@@ -142,9 +142,9 @@ class CommitMessage(object):
             "sgc":[
             ],
             "cc":[
-                inquirer.List(name='tag', message='select the type of tag', choices=self.choices[self.format] ),
-                inquirer.Text(name='module', message="module name", validate=lambda _, x: x != '.'),
-                inquirer.Text(name='header', message="header message", validate=lambda _, x: x != '.'),
+                inquirer.List(name='tag', message='select the type', choices=self.choices[self.format] ),
+                inquirer.Text(name='module', message="scope", validate=lambda _, x: x != '.'),
+                inquirer.Text(name='header', message="description", validate=lambda _, x: x != '.'),
             ],
             "free":[
                 inquirer.Editor(name='body', message='body of the commit'),
