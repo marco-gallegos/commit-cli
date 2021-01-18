@@ -1,7 +1,7 @@
 """
 @Author Marco A. Gallegos
 @Date   2020/12/31
-@update 2020/12/31
+@update 2021/01/18
 @Description
     archivo que describe el paquete distribuible
 """
@@ -12,7 +12,7 @@ with open("readme.md", "r") as fh:
 
 setuptools.setup(
     name="commitcli",
-    version="1.0.0",
+    version="1.1.0",
     author="Marco A. Gallegos",
     author_email="ma_galeza@hotmail.com",
     description="commit cli for git with some formats, by default short version of odoo format",
@@ -30,6 +30,7 @@ setuptools.setup(
     python_requires='>=3.6',
     install_requires=[
         'inquirer',
+        'click'
     ],
     # hacer que setup tools genere un comando cli
     entry_points={

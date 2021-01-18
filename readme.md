@@ -4,7 +4,13 @@ This project provides a cli to make git commits with a minimized [odoo format](h
 
 Is a wrapper of the `git commit -m` command writed with 💟 on Python.
 
-This was tested on a raspbian and a fedora OS with the nvim and vim editor
+This was tested on a raspbian and a fedora OS with the nano, nvim and vim editor.
+
+supported formats:
+
+- short odoo
+- conventional commits
+- free (this is like use native `git commit` command)
 
 ## Instalation
 
@@ -37,16 +43,25 @@ comitcli
 
 ![ejemplo de imagen](./static/img/example.png)
 
+## Configuration
+
+This utility creates a file into the users home directory `~/.commitclirc` in this file you will find some customizable options. the most important is the format option this option accepts this formats:
+
+- odoo
+- cc
+- free
+
 
 ## Next Updates
 
 #### Formats
 
-- [ ] config manager using ~/.comirclirc file
-- [ ]  conventional commits [CC](https://www.conventionalcommits.org/en/v1.0.0/)
+- [*] config manager using ~/.comirclirc file
+- [*]  conventional commits [CC](https://www.conventionalcommits.org/en/v1.0.0/)
   - [tags](https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional)  
 - [ ]  semantic git commit [SGC](https://www.npmjs.com/package/semantic-git-commit-cli)
 - [ ]  full odoo tags
+- [ ]  configuration changes using the cli
 
 
 ## Development
@@ -57,9 +72,6 @@ comitcli
 using without install from the source 
 
 python -m commitcli
-
-
-and defining the __main__.py file
 
 
 ## References

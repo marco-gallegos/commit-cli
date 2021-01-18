@@ -6,6 +6,8 @@
 #
 blessed==1.17.6
     # via inquirer
+click==7.1.2
+    # via -r requirements.in
 inquirer==2.7.0
     # via -r requirements.in
 python-editor==1.0.4
