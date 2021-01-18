@@ -171,7 +171,7 @@ class CommitMessage(object):
             return self.questions[self.format]
 
     
-    def get_commit_string(self):
+    def get_commit_string(self)->str:
         """Method to return the formathed commit string
 
         Returns:
@@ -183,9 +183,9 @@ class CommitMessage(object):
             elif self.format == "free":
                 return f"{self.body}"
             elif self.format == "cc":
-                "{tag}{module}: {header}{body}{footer}".format(
+                return "{tag}{module}: {header}{body}{footer}".format(
                     tag=self.tag,
-                    module= ( "" if not self.tag else self.tag),
+                    module= ( "" if not self.module else f"({self.module})"),
                     header= self.header,
                     body= ( "" if not self.body else f"\n\n{self.body}"),
                     footer= ( "" if not self.footer else f"\n\n{self.footer}"),
@@ -221,6 +221,10 @@ class CommitMessage(object):
                     self.body = answers['body']
                 if 'footer' in answers:
                     self.footer = answers['footer']
+            return True
+        else:
+            return False
+
                 
 
     
@@ -235,9 +239,7 @@ class CommitMessage(object):
                     set_question = input(f"set the {question.name} (y,*): ")
                     if set_question.lower() == 'y':
                         temp_dict = inquirer.prompt({question})
-                        answers.update(temp_dict)  
-                        print(temp_dict)
-            print(answers)
+                        answers.update(temp_dict)
             self.set_answers(answers)
 
 
