@@ -6,6 +6,7 @@
     This file contains a class to abstract a commit message
 """
 import inquirer, os
+from configmanager.config_manager import ConfigManager
 
 class CommitMessage(object):
     """This clas is a abstraction of a commit message,
@@ -17,12 +18,14 @@ class CommitMessage(object):
     
     def __init__(self, 
         format:str="odoo", 
+        configuration_manager:ConfigManager=ConfigManager(),
         tag:str=None, 
         module:str=None, 
         header:str=None, 
-        body:str=None, 
+        body:str=None,
+
     ):
-        """Constructor of the class to
+        """Constructor of the class
 
         Args:
             format (str, optional): format to use. Defaults to "odoo".
@@ -36,12 +39,10 @@ class CommitMessage(object):
         self.module = module
         self.header = header
         self.body = body
+        self.config = configuration_manager
         
-        self.format = format
-
-        self.formats = [
-            "odoo"
-        ]
+        # probablemente se deba quitar
+        self.format = self.config.config.config['format']
 
         self.choices = {
             "odoo": [
@@ -73,6 +74,12 @@ class CommitMessage(object):
                     "REV for reverting commits: if a commit causes issues or is not wanted reverting it is done using this tag",
                     "REV"
                 ),
+            ],
+            "sgc":[
+
+            ],
+            "cc":[
+
             ]
         }
 
@@ -84,6 +91,13 @@ class CommitMessage(object):
                 inquirer.Editor(name='body', message='body of the commit'),
                 #inquirer.Confirm(name='correct',  message="tag: {tag}, module: {module} , header: {header} \n {body}\nContinue?", default=False),
             ],
+            "sgc":[
+            ],
+            "cc":[
+            ],
+            "free":[
+                inquirer.Editor(name='body', message='body of the commit'),
+            ]
         }
 
 
@@ -103,7 +117,7 @@ class CommitMessage(object):
             str: formatted commit string
         """
         if self.can_generate_string():
-            if self.format == "odoo" or self.format not in self.formats:
+            if self.format == "odoo" or self.format not in self.config.formats:
                 return f"[{self.tag}] {self.module}: {self.header}\n\n{self.body}"
         else:
             print("no se puede generar commit")
@@ -117,10 +131,17 @@ class CommitMessage(object):
             answers (dict): answers provided by the user
         """
         if answers:
-            self.tag = answers['tag']
-            self.module = answers['module']
-            self.header = answers['header']
-            self.body = answers['body']
+            if self.format == 'odoo':
+                self.tag = answers['tag']
+                self.module = answers['module']
+                self.header = answers['header']
+                self.body = answers['body']
+            elif self.format == 'free':
+                self.body = answers['body']
+            elif self.format == 'sgc':
+                pass
+            elif self.format == 'cc':
+                pass
 
     
     def get_answers(self):
@@ -129,6 +150,7 @@ class CommitMessage(object):
         answers = inquirer.prompt(self.questions[self.format])
         if answers:
             self.set_answers(answers)
+
 
     def can_generate_string(self):
         """Method to determinate if we can build the commit message
@@ -139,5 +161,11 @@ class CommitMessage(object):
         """
         if self.format == "odoo":
             return self.tag and self.module and self.header and self.body
+        elif self.format == "free":
+            return self.body
+        elif self.format == "sgc":
+            return False
+        elif self.format == "cc":
+            return False
         else:
             return False
