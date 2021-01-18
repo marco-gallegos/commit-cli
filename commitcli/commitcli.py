@@ -9,15 +9,18 @@
 import os
 from commitcli.commit_message import CommitMessage
 from configmanager.config_manager import ConfigManager
+import click
 
-
+@click.command()
 def main()->bool:
-    """Funcion para realizar el commit
+    """Function to make commits, its a wrapper for the 'git commit' command
+     this uses the ~/.comitrc file to store and manage the config
 
     :return: estado de la ejecucion
     :rtype: bool
     """
-    commit_msg = CommitMessage()
+    configuration = ConfigManager()
+    commit_msg = CommitMessage(configuration_manager=configuration)
     are_there_changes = os.system("git status --short -uno >> /dev/null")
     if are_there_changes == 32768:
         print("no existe un repositorio git")
