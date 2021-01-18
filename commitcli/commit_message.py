@@ -75,10 +75,57 @@ class CommitMessage(object):
                     "REV"
                 ),
             ],
+            "free":[
+
+            ],
             "sgc":[
 
             ],
             "cc":[
+                (
+                    'build : Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)',
+                    'build'
+                ),
+                (
+                    'ci : Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)',
+                    'ci'
+                ),
+                (
+                    'chore : Updates and changes',
+                    'chore'
+                ),
+                (
+                    'docs : Documentation only changes',
+                    'docs'
+                ),
+                (
+                    'feat : A new feature',
+                    'feat'
+                ),
+                (
+                    'fix : A bug fix',
+                    'fix'
+                ),
+                (
+                    'perf : A code change that improves performance',
+                    'perf'
+                ),
+                (
+                    'refactor : A code change that neither fixes a bug nor adds a feature',
+                    'refactor'
+                ),
+                (
+                    'revert: revert of the code',
+                    'revert'
+                ),
+                (
+                    'style : Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)',
+                    'style'
+                ),
+                (
+                    'test : Adding missing tests or correcting existing tests',
+                    'test'
+                ),
 
             ]
         }
@@ -94,20 +141,33 @@ class CommitMessage(object):
             "sgc":[
             ],
             "cc":[
+                inquirer.List(name='tag', message='select the type of tag', choices=self.choices[self.format] ),
+                inquirer.Text(name='module', message="module name", validate=lambda _, x: x != '.'),
+                inquirer.Text(name='header', message="header message", validate=lambda _, x: x != '.'),
             ],
             "free":[
                 inquirer.Editor(name='body', message='body of the commit'),
             ]
         }
 
+        self.optional_questions = {
+            "cc":[
+                inquirer.Editor(name='body', message='body of the commit'),
+                inquirer.Editor(name='footer', message='footer of the commit'),
+            ]
+        }
 
-    def get_questions(self):
+
+    def get_questions(self, optionals:bool=False):
         """Method to return the current questions of
 
         Returns:
             list: list with the questions
         """
-        return self.questions[self.format]
+        if optionals:
+            return self.optional_questions[self.format]
+        else:
+            return self.questions[self.format]
 
     
     def get_commit_string(self):
@@ -117,8 +177,20 @@ class CommitMessage(object):
             str: formatted commit string
         """
         if self.can_generate_string():
-            if self.format == "odoo" or self.format not in self.config.formats:
+            if self.format == "odoo" or self.format not in self.config.config.supported_formats:
                 return f"[{self.tag}] {self.module}: {self.header}\n\n{self.body}"
+            elif self.format == "free":
+                return f"{self.body}"
+            elif self.format == "cc":
+                "{tag}{module}: {header}{body}{footer}".format(
+                    tag=self.tag,
+                    module= ( "" if not self.tag else self.tag),
+                    header= self.header,
+                    body= ( "" if not self.body else f"\n\n{self.body}"),
+                    footer= ( "" if not self.footer else f"\n\n{self.footer}"),
+                )
+            else:
+                print("no se puede gener el string para el commit")
         else:
             print("no se puede generar commit")
         return None
@@ -148,7 +220,16 @@ class CommitMessage(object):
         """Method to get the answers from the user
         """
         answers = inquirer.prompt(self.questions[self.format])
+        #TODO use a conditional flag to disable or enable the optional questions
         if answers:
+            if self.format in self.optional_questions:
+                for question in self.optional_questions[self.format]:
+                    set_question = input(f"set the {question.name} (y,*): ")
+                    if set_question.lower() == 'y':
+                        temp_dict = inquirer.prompt({question})
+                        answers.update(temp_dict)  
+                        print(temp_dict)
+            print(answers)
             self.set_answers(answers)
 
 
