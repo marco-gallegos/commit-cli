@@ -23,7 +23,7 @@ class CommitMessage(object):
         module:str=None, 
         header:str=None, 
         body:str=None,
-
+        footer:str=None,
     ):
         """Constructor of the class
 
@@ -39,6 +39,7 @@ class CommitMessage(object):
         self.module = module
         self.header = header
         self.body = body
+        self.footer = footer
         self.config = configuration_manager
         
         # probablemente se deba quitar
@@ -213,7 +214,14 @@ class CommitMessage(object):
             elif self.format == 'sgc':
                 pass
             elif self.format == 'cc':
-                pass
+                self.tag = answers['tag']
+                self.module = answers['module']
+                self.header = answers['header']
+                if 'body' in answers:
+                    self.body = answers['body']
+                if 'footer' in answers:
+                    self.footer = answers['footer']
+                
 
     
     def get_answers(self):
@@ -247,6 +255,6 @@ class CommitMessage(object):
         elif self.format == "sgc":
             return False
         elif self.format == "cc":
-            return False
+            return self.tag and self.header
         else:
             return False
