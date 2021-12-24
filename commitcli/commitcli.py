@@ -11,12 +11,13 @@ from commitcli.commit_message import CommitMessage
 from configmanager.config_manager import ConfigManager
 import click
 
-@click.command()
-def main()->bool:
-    """Function to make commits, its a wrapper for the 'git commit' command
-     this uses the ~/.comitrc file to store and manage the config
 
-    :return: estado de la ejecucion
+@click.command()
+def main() -> bool:
+    """Function to make commits, its a wrapper for the 'git commit' command
+    this uses the '~/.commitclirc' file to store and manage the config
+
+    :return: execution status
     :rtype: bool
     """
     configuration = ConfigManager()
@@ -26,7 +27,7 @@ def main()->bool:
         print("no existe un repositorio git")
         return False
 
-    are_there_changes_output = os.popen("git diff --name-only --cached").read() #str with the output
+    are_there_changes_output = os.popen("git diff --name-only --cached").read()  # str with the output
     if len(are_there_changes_output) == 0:
         print("no hay cambios por ser rastreados")
         return False

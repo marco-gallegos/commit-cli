@@ -7,6 +7,7 @@
 """
 import os
 
+
 class Configuration(object):
     def __init__(self, config:dict=None, signgpg:bool=False):
         self.config = {
@@ -34,7 +35,6 @@ class Configuration(object):
                 self.config['format']=self.supported_formats[0]
 
         self.can_sign_gpg()
-
     
     def __str__(self)->str:
         """Return a string representation of the object, this function
@@ -44,7 +44,6 @@ class Configuration(object):
         :rtype: str
         """
         return f"configuracion|  format: {self.config['format']} || sign: {self.config['signgpg']}"
-
     
     def can_sign_gpg(self)->bool:
         """Return true if the users git repository is configured to sign the commits
@@ -58,9 +57,8 @@ class Configuration(object):
         else:
             return True
 
-
     def is_a_valid_format(self, format:str)->bool:
-        """Return true if the format parameter string is a supported commit format
+        """Return true if the format parameter string is a supported commit format.
 
         :param format: format to evaluate
         :type format: str
@@ -69,10 +67,9 @@ class Configuration(object):
         """
         return format in self.supported_formats
 
-
     def get_configuration_file_string(self, filled:bool=True)->str:
         """This method returns the string to store the configuration file,
-        optionally this function return the string template
+        optionally this function return the string template.
 
         :param filled: if you want the filled string or the template string, defaults to True
         :type filled: bool, optional
@@ -80,10 +77,10 @@ class Configuration(object):
         :rtype: str
         """
         file_template = "#Format for every commit\n"\
-        "#supported formats free, odoo, sgc(semantic git commits) and cc (conventional commits)\n"\
-        "format={format}\n\n"\
-        "#Option to sign the commits o every commit, must be True or False\n"\
-        "signgpg={sign}"\
+            "#supported formats free, odoo, sgc(semantic git commits) and cc (conventional commits)\n"\
+            "format={format}\n\n"\
+            "#Option to sign the commits o every commit, must be True or False\n"\
+            "signgpg={sign}"\
         
         if filled:
             return file_template.format(format=self.config['format'], sign=self.config['signgpg'])

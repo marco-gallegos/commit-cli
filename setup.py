@@ -3,7 +3,7 @@
 @Date   2020/12/31
 @update 2021/01/18
 @Description
-    archivo que describe el paquete distribuible
+    archivo que describe el paquete distribuible.
 """
 import setuptools
 
