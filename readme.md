@@ -54,11 +54,17 @@ This utility creates a file into the users home directory `~/.commitclirc` in th
 
 ## Next Updates
 
+- [x] local .comitclirc file to every project
+- [ ] only make a echo of a format
+- [ ] cli inline option to specify format (oddo, sgc, etc)
+- [ ] module list to chose for context in cc or something like this `type(context)`
+- [ ] 
+
 #### Formats
 
-- [*] config manager using ~/.comirclirc file
-- [*]  conventional commits [CC](https://www.conventionalcommits.org/en/v1.0.0/)
-  - [tags](https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional)  
+- [x] config manager using ~/.comirclirc file
+- [x]  conventional commits [CC](https://www.conventionalcommits.org/en/v1.0.0/)
+   - [tags](https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional)  
 - [ ]  semantic git commit [SGC](https://www.npmjs.com/package/semantic-git-commit-cli)
 - [ ]  full odoo tags
 - [ ]  configuration changes using the cli
