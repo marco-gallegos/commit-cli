@@ -12,7 +12,7 @@ with open("readme.md", "r") as fh:
 
 setuptools.setup(
     name="commitcli",
-    version="1.1.0",
+    version="1.1.1",
     author="Marco A. Gallegos",
     author_email="ma_galeza@hotmail.com",
     description="commit cli for git with some formats, by default short version of odoo format",
@@ -27,7 +27,7 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires='>=3.6',
+    python_requires='>=3.8',
     install_requires=[
         'inquirer',
         'click'

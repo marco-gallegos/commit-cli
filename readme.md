@@ -12,6 +12,18 @@ supported formats:
 - conventional commits
 - free (this is like use native `git commit` command)
 
+## Features
+
+### Commitcli configuration file per project
+
+You can add a `.commitclirc` file in your project directory.
+
+you can copy the global `.commitclirc` file to your project directory and edit it to use a diferent format.
+
+```shell
+cp ~/.commitclirc .commitclirc
+```
+
 ## Instalation
 
 #### 1 - Install the package
@@ -21,6 +33,28 @@ note : use sudo if the local (user) python bin dir is not in the path
 ```shell
 sudo pip install commitcli
 ```
+
+example content of the `.commitclirc` file:
+```shell
+#Format for every commit
+#supported formats free, odoo, sgc(semantic git commits) and cc (conventional commits)
+format=odoo
+
+#Option to sign the commits o every commit, must be True or False
+signgpg=False
+```
+
+change this to use cc on your project:
+```shell
+#Format for every commit
+#supported formats free, odoo, sgc(semantic git commits) and cc (conventional commits)
+format=cc
+
+#Option to sign the commits o every commit, must be True or False
+signgpg=False
+```
+
+save this file and add to your git repository and every comand will use cc format on this project.
 
 #### 2 - Enjoy
 
