@@ -1,14 +1,17 @@
 """
 @Author Marco A. Gallegos
 @Date   2020/12/31
-@update 2021/01/18
+@update 2021/12/24
 @Description
     archivo que describe el paquete distribuible.
+    how to use:
+    compile ->  python3 setup.py sdist bdist_wheel
 """
 import setuptools
 
 with open("readme.md", "r") as fh:
     long_description = fh.read()
+    fh.close()
 
 setuptools.setup(
     name="commitcli",
@@ -20,7 +23,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/marco-gallegos/commit-cli",
     license="MIT",
-    keywords = "cli, ",
+    keywords="cli, ",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
