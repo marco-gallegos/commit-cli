@@ -68,7 +68,7 @@ git add .
 Use the tool
 
 ```shell
-comitcli
+commitcli
 ```
 
 ### Example

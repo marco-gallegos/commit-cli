@@ -1,7 +1,7 @@
 """
 @Author Marco A. Gallegos
 @Date   2020/12/31
-@update 2021/12/24
+@update 2022/04/04
 @Description
     archivo que describe el paquete distribuible.
     how to use:
@@ -15,7 +15,7 @@ with open("readme.md", "r") as fh:
 
 setuptools.setup(
     name="commitcli",
-    version="1.1.1",
+    version="1.1.2",
     author="Marco A. Gallegos",
     author_email="ma_galeza@hotmail.com",
     description="commit cli for git with some formats, by default short version of odoo format",
