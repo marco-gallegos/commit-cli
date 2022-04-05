@@ -6,9 +6,9 @@
 #
 blessed==1.19.0
     # via inquirer
-click==8.0.3
+click==8.1.2
     # via -r requirements.in
-inquirer==2.8.0
+inquirer==2.8
     # via -r requirements.in
 python-editor==1.0.4
     # via inquirer

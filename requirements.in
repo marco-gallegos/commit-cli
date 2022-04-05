@@ -1,2 +1,4 @@
-inquirer
+# comment
+#
+inquirer==2.8
 click
