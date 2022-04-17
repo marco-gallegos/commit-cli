@@ -24,7 +24,7 @@ you can copy the global `.commitclirc` file to your project directory and edit i
 cp ~/.commitclirc .commitclirc
 ```
 
-## Instalation
+## Installation
 
 #### 1 - Install the package
 
@@ -87,16 +87,19 @@ This utility creates a file into the users home directory `~/.commitclirc` in th
 
 
 ## Next Updates
-
-- [x] local .comitclirc file to every project
+- [ ] dont ask about optionals
 - [ ] only make a echo of a format
 - [ ] cli inline option to specify format (oddo, sgc, etc)
 - [ ] module list to chose for context in cc or something like this `type(context)`
-- [ ] 
+- [ ] quick templates
+  - clean up
+- [ ] smarter
+  - store module list and provide a list of modules to choose from and the last by default
+- [ ] create branches
+  - use format <username>/<type "ej fix">/<free name> 
 
 #### Formats
 
-- [x] config manager using ~/.comirclirc file
 - [x]  conventional commits [CC](https://www.conventionalcommits.org/en/v1.0.0/)
    - [tags](https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional)  
 - [ ]  semantic git commit [SGC](https://www.npmjs.com/package/semantic-git-commit-cli)

@@ -24,7 +24,7 @@ def main() -> bool:
     commit_msg = CommitMessage(configuration_manager=configuration)
     are_there_changes = os.system("git status --short -uno >> /dev/null")
     if are_there_changes == 32768:
-        print("no existe un repositorio git")
+        print("there's not a git repository here")
         return False
 
     are_there_changes_output = os.popen("git diff --name-only --cached").read()  # str with the output
@@ -36,7 +36,7 @@ def main() -> bool:
     commit_string = commit_msg.get_commit_string()
 
     if commit_string:
-        print("haciendo commit")
+        print("commiting...")
         print("=="*30)
         os.system(f"git commit -m '{commit_string}'")
     
