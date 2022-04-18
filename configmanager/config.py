@@ -38,8 +38,8 @@ class Configuration(object):
         if config:
             self.config['format'] = config['format'].lower() if 'format' in config else self.config['format'].lower()
             self.config['signgpg'] = config['signgpg'] if 'signgpg' in config else self.config['signgpg']
-            # TODO: this is redundant so only comment and use ir above
-            # self.config['format'] = self.config['format'].lower()
+            print("config")
+            print(self.config)
 
             if self.config['signgpg'] and not self.can_sign_gpg():
                 print("Tu configuracion solicita firmar commits pero git no esta configurado")
@@ -60,7 +60,8 @@ class Configuration(object):
         :return: string representation
         :rtype: str
         """
-        return f"configuracion|  format: {self.config['format']} || sign: {self.config['signgpg']}"
+        return f"configuracion->  format: {self.config['format']} || sign: {self.config['signgpg']}" \
+               f" || avoid_optionals: {self.config['avoid_optionals']}"
     
     def can_sign_gpg(self)->bool:
         """Return true if the users git repository is configured to sign the commits

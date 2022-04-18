@@ -14,6 +14,8 @@ from configmanager.config import Configuration
 
 
 class ConfigManager(object):
+    # data
+
     def __init__(self, file: str = '.commitclirc', config: Configuration = None, override_config: dict = None):
         self._file = file
         self.config = config
@@ -78,7 +80,6 @@ class ConfigManager(object):
                 key, value = self.stringline_to_key_value(string_line=file_line)
                 if value == "False" or value == "True" or value == "false" or value == "true":
                     value = bool(distutils.util.strtobool(value.lower()))
-                # print(f"{key} {value}")
                 if key is not None and value is not None:
                     data_dict[key] = value
             return data_dict
@@ -114,4 +115,9 @@ class ConfigManager(object):
                 self.save_file()
                 return False
 
-
+    def get_config(self, name: str) -> str or bool:
+        if self.config is not None and self.config.config is not None and self.config.config[name] is not None:
+            return self.config.config[name]
+        else:
+            return None
+        return None

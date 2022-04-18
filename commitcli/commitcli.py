@@ -54,5 +54,7 @@ def create_commit_message(configuration_manager: ConfigManager) -> bool:
         print("commiting...")
         print("=="*30)
         os.system(f"git commit -m '{commit_string}'")
+        # print(commit_string)
+        # print("done :)")
     
     return True

@@ -191,9 +191,9 @@ class CommitMessage(object):
                     footer= ( "" if not self.footer else f"\n\n{self.footer}"),
                 )
             else:
-                print("no se puede gener el string para el commit")
+                print("error creating commit string")
         else:
-            print("no se puede generar commit")
+            print("we can not create commit")
         return None
 
     def set_answers(self, answers:dict):
@@ -228,9 +228,8 @@ class CommitMessage(object):
         """Method to get the answers from the user
         """
         answers = inquirer.prompt(self.questions[self.format])
-        # TODO use a conditional flag to disable or enable the optional questions
         if answers:
-            if self.format in self.optional_questions and False:
+            if self.format in self.optional_questions and not self.config.get_config("avoid_optionals"):
                 for question in self.optional_questions[self.format]:
                     set_question = input(f"set the {question.name} (y,*): ")
                     if set_question.lower() == 'y':
