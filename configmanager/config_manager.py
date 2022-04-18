@@ -14,12 +14,14 @@ from configmanager.config import Configuration
 
 
 class ConfigManager(object):
-    def __init__(self, file: str = '.commitclirc', config: Configuration = None):
+    def __init__(self, file: str = '.commitclirc', config: Configuration = None, override_config: dict = None):
         self._file = file
         self.config = config
         self.regex_clave_valor = r'[\D]+[=]{1}[\w]+'
         self.pattern_regex_clave_valor = re.compile(self.regex_clave_valor)
-        self.init_config()
+
+        # some initial starts
+        self.init_config(override_config=override_config)
 
     def current_file(self) -> str:
         """this function return the fullpath of the file to store
@@ -65,10 +67,10 @@ class ConfigManager(object):
         :return: dictionary with al the key value files in thee file
         :rtype: dict
         """
-        currentfile = file
-        if self.exist_file(currentfile):
+        current_file = file
+        if self.exist_file(current_file):
             data_dict = {}
-            file = open(currentfile, 'r')
+            file = open(current_file, 'r')
             file_text = file.readlines()
             file.close()
             for file_line in file_text:
@@ -89,26 +91,27 @@ class ConfigManager(object):
         :return: True
         :rtype: bool
         """
-        file= open(self.current_file(), 'w')
+        file = open(self.current_file(), 'w')
         file.write(self.config.get_configuration_file_string())
         file.close()
         return True
 
-    def init_config(self) -> bool:
+    def init_config(self, force_reload: bool = False, override_config: dict = None) -> bool:
         """Method to initialize the class, triggering the load of the file or load
         creating a defaul config and save it on the file.
 
         :return: boolean representing the previous existence of the config file
         :rtype: bool
         """
-        currentfile = self.current_file()
-        if self.exist_file(currentfile):
-            data = self.load_file(currentfile)
-            # print("data from init file")
-            # print(data)
-            self.config = Configuration(config=data)
-            return True
-        else:
-            self.config = Configuration()
-            self.save_file()
-            return False
+        if self.config is None:
+            current_file = self.current_file()
+            if self.exist_file(current_file):
+                data = self.load_file(current_file)
+                self.config = Configuration(config=data, override_config=override_config)
+                return True
+            else:
+                self.config = Configuration(override_config=override_config)
+                self.save_file()
+                return False
+
+

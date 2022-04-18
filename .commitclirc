@@ -1,6 +1,6 @@
 #Format for every commit
 #supported formats free, odoo, sgc(semantic git commits) and cc (conventional commits)
-format=odoo
+format=cc
 
 #Option to sign the commits o every commit, must be True or False
 signgpg=False

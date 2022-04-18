@@ -8,6 +8,7 @@
 import inquirer, os
 from configmanager.config_manager import ConfigManager
 
+
 class CommitMessage(object):
     """This clas is a abstraction of a commit message,
     this class must to generate a formatted commit string
@@ -16,14 +17,15 @@ class CommitMessage(object):
         object (object): base object from python
     """
     
-    def __init__(self, 
-        format:str="odoo", 
-        configuration_manager:ConfigManager=ConfigManager(),
-        tag:str=None, 
-        module:str=None, 
-        header:str=None, 
-        body:str=None,
-        footer:str=None,
+    def __init__(
+        self,
+        format: str = "odoo",
+        configuration_manager: ConfigManager = ConfigManager(),
+        tag: str = None,
+        module: str = None,
+        header: str = None,
+        body: str = None,
+        footer: str = None,
     ):
         """Constructor of the class
 
@@ -158,7 +160,6 @@ class CommitMessage(object):
             ]
         }
 
-
     def get_questions(self, optionals:bool=False):
         """Method to return the current questions of
 
@@ -169,7 +170,6 @@ class CommitMessage(object):
             return self.optional_questions[self.format]
         else:
             return self.questions[self.format]
-
     
     def get_commit_string(self)->str:
         """Method to return the formathed commit string
@@ -195,7 +195,6 @@ class CommitMessage(object):
         else:
             print("no se puede generar commit")
         return None
-
 
     def set_answers(self, answers:dict):
         """Method to set the answers from the user
@@ -225,16 +224,13 @@ class CommitMessage(object):
         else:
             return False
 
-                
-
-    
     def get_answers(self):
         """Method to get the answers from the user
         """
         answers = inquirer.prompt(self.questions[self.format])
-        #TODO use a conditional flag to disable or enable the optional questions
+        # TODO use a conditional flag to disable or enable the optional questions
         if answers:
-            if self.format in self.optional_questions:
+            if self.format in self.optional_questions and False:
                 for question in self.optional_questions[self.format]:
                     set_question = input(f"set the {question.name} (y,*): ")
                     if set_question.lower() == 'y':
@@ -242,8 +238,7 @@ class CommitMessage(object):
                         answers.update(temp_dict)
             self.set_answers(answers)
 
-
-    def can_generate_string(self):
+    def can_generate_string(self) -> bool:
         """Method to determinate if we can build the commit message
         for the selected format
 

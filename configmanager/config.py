@@ -9,10 +9,23 @@ import os
 
 
 class Configuration(object):
-    def __init__(self, config:dict=None, signgpg:bool=False):
+    config: dict = {
+        "format": None,
+        "signgpg": None,
+        "avoid_optionals": False,
+    }
+    supported_formats: list = [
+        "odoo",
+        "sgc",
+        "cc",
+        "free",
+    ]
+
+    def __init__(self, config: dict = None, signgpg: bool = False, override_config: dict = None):
         self.config = {
             'format': "odoo",
             'signgpg': signgpg,
+            'avoid_optionals': override_config['avoid_optionals'] if override_config else False
         }
 
         self.supported_formats = [
@@ -23,16 +36,20 @@ class Configuration(object):
         ]
 
         if config:
-            self.config['format'] = config['format'].lower() if 'format' in config else self.config['format']
+            self.config['format'] = config['format'].lower() if 'format' in config else self.config['format'].lower()
             self.config['signgpg'] = config['signgpg'] if 'signgpg' in config else self.config['signgpg']
-            self.config['format'] = self.config['format'].lower()
+            # TODO: this is redundant so only comment and use ir above
+            # self.config['format'] = self.config['format'].lower()
 
             if self.config['signgpg'] and not self.can_sign_gpg():
                 print("Tu configuracion solicita firmar commits pero git no esta configurado")
                 self.config['signgpg']=False
             if not (self.config['format'] in self.supported_formats):
-                print(f"el formato {self.config['format']} no es soportado, por defecto usaremos el formato de {self.supported_formats[0]}")
-                self.config['format']=self.supported_formats[0]
+                print(
+                    f"{self.config['format']} is not a supported format, instead we will use "
+                    f"{self.supported_formats[0]} as default"
+                )
+                self.config['format'] = self.supported_formats[0]
 
         self.can_sign_gpg()
     
@@ -57,7 +74,7 @@ class Configuration(object):
         else:
             return True
 
-    def is_a_valid_format(self, format:str)->bool:
+    def is_a_valid_format(self, format: str) -> bool:
         """Return true if the format parameter string is a supported commit format.
 
         :param format: format to evaluate
@@ -67,7 +84,7 @@ class Configuration(object):
         """
         return format in self.supported_formats
 
-    def get_configuration_file_string(self, filled:bool=True)->str:
+    def get_configuration_file_string(self, filled: bool = True) -> str:
         """This method returns the string to store the configuration file,
         optionally this function return the string template.
 

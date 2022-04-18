@@ -13,23 +13,38 @@ import click
 
 
 @click.command()
-def main() -> bool:
+@click.option('-nop', '--nooptionals', required=False, is_flag=True, help='Do not ask for optional questions')
+@click.option(
+    '-f', '--format', required=False, help='Format the commit message',
+    # TODO: this need come from configuration file
+    type=click.Choice([], case_sensitive=False)
+)
+def main(nooptionals: bool, format: str) -> bool:
     """Function to make commits, its a wrapper for the 'git commit' command
-    this uses the '~/.commitclirc' file to store and manage the config
+    this uses the '~/.commitclirc' file to store and manage the config.
+
+    called by default for this module.
 
     :return: execution status
     :rtype: bool
     """
-    configuration = ConfigManager()
-    commit_msg = CommitMessage(configuration_manager=configuration)
+    forced_config = {
+        "avoid_optionals": nooptionals,
+    }
+    configuration_manager = ConfigManager(override_config=forced_config)
+    create_commit_message(configuration_manager)
+
+
+def create_commit_message(configuration_manager: ConfigManager) -> bool:
+    commit_msg = CommitMessage(configuration_manager=configuration_manager)
     are_there_changes = os.system("git status --short -uno >> /dev/null")
     if are_there_changes == 32768:
-        print("there's not a git repository here")
+        print("there's not a git repository here.")
         return False
 
     are_there_changes_output = os.popen("git diff --name-only --cached").read()  # str with the output
     if len(are_there_changes_output) == 0:
-        print("no hay cambios por ser rastreados")
+        print("looks like theres no changes to commit.")
         return False
     
     commit_msg.get_answers()
