@@ -14,12 +14,12 @@ import click
 
 @click.command()
 @click.option('-nop', '--nooptionals', required=False, is_flag=True, help='Do not ask for optional questions')
-@click.option(
-    '-f', '--format', required=False, help='Format the commit message',
-    # TODO: this need come from configuration file
-    type=click.Choice([], case_sensitive=False)
-)
-def main(nooptionals: bool, format: str) -> bool:
+# @click.option(
+#    '-f', '--format', required=False, help='Format the commit message',
+#    # TODO: this need come from configuration file
+#    type=click.Choice([], case_sensitive=False)
+# )
+def main(nooptionals: bool) -> bool:
     """Function to make commits, its a wrapper for the 'git commit' command
     this uses the '~/.commitclirc' file to store and manage the config.
 
@@ -46,7 +46,7 @@ def create_commit_message(configuration_manager: ConfigManager) -> bool:
     if len(are_there_changes_output) == 0:
         print("looks like theres no changes to commit.")
         return False
-    
+
     commit_msg.get_answers()
     commit_string = commit_msg.get_commit_string()
 
@@ -56,5 +56,5 @@ def create_commit_message(configuration_manager: ConfigManager) -> bool:
         os.system(f"git commit -m '{commit_string}'")
         # print(commit_string)
         # print("done :)")
-    
+
     return True

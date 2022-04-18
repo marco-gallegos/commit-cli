@@ -17,6 +17,12 @@ if [[ $1 ]]; then
 		  twine upload dist/*
 		;;
 
+    "--help" )
+      echo "Usage: ./admin.sh [build|upload]"
+      echo "build: Compiles the package in pip package format"
+      echo "upload: Uploads the package to PyPi"
+    ;;
+
 		*)
 			echo "invalid option: $1"
 	esac
