@@ -13,6 +13,12 @@ if [[ $1 ]]; then
 			echo "Done"
 		;;
 
+		"clean_build" )
+			echo "Cleaning..."
+			rm -rf build dist
+			echo "Done"
+		;;
+
 		"upload" )
 			twine upload dist/*
 		;;
