@@ -10,6 +10,7 @@ supported formats:
 
 - short odoo
 - conventional commits
+- semantic git commits
 - free (this is like use native `git commit` command)
 
 ## Features
@@ -87,7 +88,6 @@ This utility creates a file into the users home directory `~/.commitclirc` in th
 
 
 ## Next Updates
-- [ ] dont ask about optionals
 - [ ] only make a echo of a format
 - [ ] cli inline option to specify format (oddo, sgc, etc)
 - [ ] module list to chose for context in cc or something like this `type(context)`
@@ -100,11 +100,9 @@ This utility creates a file into the users home directory `~/.commitclirc` in th
 
 #### Formats
 
-- [x]  conventional commits [CC](https://www.conventionalcommits.org/en/v1.0.0/)
-   - [tags](https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional)  
-- [ ]  semantic git commit [SGC](https://www.npmjs.com/package/semantic-git-commit-cli)
-- [ ]  full odoo tags
-- [ ]  configuration changes using the cli
+- [x]  conventional commits [CC](https://www.conventionalcommits.org/en/v1.0.0/) 
+- [x]  semantic git commit [SGC](https://www.npmjs.com/package/semantic-git-commit-cli)
+- [x]  odoo tags [Odoo](https://www.odoo.com/documentation/14.0/reference/guidelines.html#git)
 
 
 ## Development
