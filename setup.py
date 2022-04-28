@@ -15,7 +15,7 @@ with open("readme.md", "r") as fh:
 
 setuptools.setup(
     name="commitcli",
-    version="1.2.0",
+    version="1.2.1",
     author="Marco A. Gallegos",
     author_email="ma_galeza@hotmail.com",
     description="commit cli for git with some formats, by default short version of odoo format",
@@ -23,7 +23,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/marco-gallegos/commit-cli",
     license="MIT",
-    keywords="cli, ",
+    keywords="cli,cc,commit,git,odoo,github,gitlab,bitbucket,conventional commits, semantic commits",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
@@ -32,7 +32,7 @@ setuptools.setup(
     ],
     python_requires='>=3.8',
     install_requires=[
-        'inquirer',
+        'inquirer<=2.8.0',
         'click'
     ],
     # hacer que setup tools genere un comando cli
