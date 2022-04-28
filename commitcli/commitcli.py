@@ -39,7 +39,7 @@ def create_commit_message(configuration_manager: ConfigManager) -> bool:
     commit_msg = CommitMessage(configuration_manager=configuration_manager)
     are_there_changes = os.system("git status --short -uno >> /dev/null")
     if are_there_changes == 32768:
-        print("there's not a git repository here.")
+        print("there's not a git repository.")
         return False
 
     are_there_changes_output = os.popen("git diff --name-only --cached").read()  # str with the output

@@ -38,8 +38,6 @@ class Configuration(object):
         if config:
             self.config['format'] = config['format'].lower() if 'format' in config else self.config['format'].lower()
             self.config['signgpg'] = config['signgpg'] if 'signgpg' in config else self.config['signgpg']
-            print("config")
-            print(self.config)
 
             if self.config['signgpg'] and not self.can_sign_gpg():
                 print("Tu configuracion solicita firmar commits pero git no esta configurado")
