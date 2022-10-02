@@ -21,7 +21,7 @@ class Configuration(object):
         "free",
     ]
 
-    def __init__(self, config: dict = None, signgpg: bool = False, override_config: dict = None):
+    def __init__(self, config:dict = None, signgpg: bool = False, override_config: dict = None) -> None:
         self.config = {
             'format': "odoo",
             'signgpg': signgpg,
@@ -82,6 +82,7 @@ class Configuration(object):
         :rtype: bool
         """
         return format in self.supported_formats
+
 
     def get_configuration_file_string(self, filled: bool = True) -> str:
         """This method returns the string to store the configuration file,

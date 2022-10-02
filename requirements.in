@@ -2,3 +2,5 @@
 #
 inquirer==2.8
 click
+pytest
+coverage
