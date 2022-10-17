@@ -5,7 +5,7 @@
 @Description
     This file contains a class to abstract a commit message
 """
-import inquirer, os
+import inquirer
 from configmanager.config_manager import ConfigManager
 
 
@@ -170,8 +170,9 @@ class CommitMessage(object):
             return self.optional_questions[self.format]
         else:
             return self.questions[self.format]
-    
-    def get_commit_string(self)->str:
+
+
+    def get_commit_string(self)->str|None:
         """Method to return the formathed commit string
 
         Returns:
@@ -195,6 +196,7 @@ class CommitMessage(object):
         else:
             print("we can not create commit")
         return None
+
 
     def set_answers(self, answers:dict):
         """Method to set the answers from the user
@@ -224,9 +226,19 @@ class CommitMessage(object):
         else:
             return False
 
+
+    def get_easy_answers(self):
+        """check for possible preselected answers according the current format"""
+        pass
+
+
     def get_answers(self):
         """Method to get the answers from the user
+        1 - check for preselections
+        2 - request filtered answers
+        3 - set up all answers
         """
+        preselected_answers:dict = self.get_easy_answers()
         answers = inquirer.prompt(self.questions[self.format])
         if answers:
             if self.format in self.optional_questions and not self.config.get_config("avoid_optionals"):
@@ -236,6 +248,7 @@ class CommitMessage(object):
                         temp_dict = inquirer.prompt({question})
                         answers.update(temp_dict)
             self.set_answers(answers)
+
 
     def can_generate_string(self) -> bool:
         """Method to determinate if we can build the commit message
