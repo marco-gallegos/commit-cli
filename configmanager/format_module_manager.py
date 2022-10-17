@@ -10,15 +10,16 @@ class ModuleConfig(object):
     use_count:int
 
     def __init__(self, name:str|None = None, date:int = 0, last_used:int = 0, use_count:int = 1) -> None:
+        print("constructing", [name, date, last_used, use_count])
         self.name:str|None = name
         self.date:int|None = date
         self.last_used:int =  last_used
         self.use_count:int = use_count
-
-    def __str__(self) -> str:
-        return f"{self.date} {self.last_used} {self.name} {self.use_count}"
+        # print("finish constructing")
 
 
+    #def __str__(self) -> str:
+    #    return f"{self.date} {self.last_used} {self.name} {self.use_count}"
 
 
 
@@ -66,11 +67,18 @@ class ModuleManager(object):
             moduleList:list = []
 
             for content in file_content:
-                content_as_list:list[str] = content.split(",")
+                content_as_list:list[str] = content.replace("\n","").split(",")
                 if len(content_as_list) >= 4:
                     print(content_as_list[0], content_as_list[1], content_as_list[2], content_as_list[3])
-                    module:ModuleConfig = ModuleConfig(content[0], int(content[1]), int(content[2]), int(content[3]))
-                    moduleList.append(module)
+                    try:
+                        module:ModuleConfig = ModuleConfig(
+                                content_as_list[0], int(content_as_list[1]),
+                                int(content_as_list[2]), int(content_as_list[3])
+                                )
+                        moduleList.append(module)
+                    except:
+                        print("error parsing row", content_as_list)
+
             return moduleList
         return None
 
@@ -88,6 +96,7 @@ if __name__ == "__main__":
     moduleManager:ModuleManager = ModuleManager()
     # row:ModuleConfig = ModuleConfig("tmti", 10, 9, 1)
     row:ModuleConfig = ModuleConfig()
-    print(row)
-    print(moduleManager.get_modules())
+    print("=="*100)
+    #print(row)
+    #print(moduleManager.get_modules())
 

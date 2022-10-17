@@ -11,19 +11,36 @@ import pathlib
 import re
 
 from configmanager.config import Configuration
+from configmanager.format_module_manager import ModuleManager
 
 
 class ConfigManager(object):
     # data
+    # moduleManager:ModuleManager|None
 
-    def __init__(self, file: str = '.commitclirc', config: Configuration = None, override_config: dict = None):
-        self._file = file
-        self.config = config
+    def __init__(
+            self, file: str = '.commitclirc',
+            config: Configuration|None = None,
+            override_config:dict|None = None,
+            moduleManager:ModuleManager|None = None,
+            loadModuleManager:bool = False
+        ) -> None:
+        self._file:str = file
+        self.config:Configuration|None = config
         self.regex_clave_valor = r'[\D]+[=]{1}[\w]+'
         self.pattern_regex_clave_valor = re.compile(self.regex_clave_valor)
 
         # some initial starts
         self.init_config(override_config=override_config)
+
+        # module manager
+        self.moduleManager:ModuleManager|None = None 
+        if loadModuleManager is True and moduleManager is None:
+            self.moduleManager = ModuleManager()
+        elif loadModuleManager is False and moduleManager is not None:
+            self.moduleManager = moduleManager
+
+
 
     def current_file(self) -> str:
         """this function return the fullpath of the file to store
@@ -97,7 +114,7 @@ class ConfigManager(object):
         file.close()
         return True
 
-    def init_config(self, force_reload: bool = False, override_config: dict = None) -> bool:
+    def init_config(self, force_reload: bool = False, override_config: dict|None = None) -> bool:
         """Method to initialize the class, triggering the load of the file or load
         creating a defaul config and save it on the file.
 
@@ -114,6 +131,7 @@ class ConfigManager(object):
                 self.config = Configuration(override_config=override_config)
                 self.save_file()
                 return False
+        return False 
 
     def get_config(self, name: str) -> str or bool:
         if self.config is not None and self.config.config is not None and self.config.config[name] is not None:

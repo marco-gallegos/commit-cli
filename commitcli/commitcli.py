@@ -19,7 +19,7 @@ import click
 #    # TODO: this need come from configuration file
 #    type=click.Choice([], case_sensitive=False)
 # )
-def main(nooptionals: bool) -> bool:
+def main(nooptionals: bool) -> bool | None:
     """Function to make commits, its a wrapper for the 'git commit' command
     this uses the '~/.commitclirc' file to store and manage the config.
 
@@ -28,21 +28,21 @@ def main(nooptionals: bool) -> bool:
     :return: execution status
     :rtype: bool
     """
-    forced_config = {
+    forced_config:dict[str, bool] = {
         "avoid_optionals": nooptionals,
     }
-    configuration_manager = ConfigManager(override_config=forced_config)
+    configuration_manager:ConfigManager = ConfigManager(override_config=forced_config, loadModuleManager=True)
     create_commit_message(configuration_manager)
 
 
 def create_commit_message(configuration_manager: ConfigManager) -> bool:
-    commit_msg = CommitMessage(configuration_manager=configuration_manager)
-    are_there_changes = os.system("git status --short -uno >> /dev/null")
+    commit_msg:CommitMessage = CommitMessage(configuration_manager=configuration_manager)
+    are_there_changes:int = os.system("git status --short -uno >> /dev/null")
     if are_there_changes == 32768:
         print("there's not a git repository.")
         return False
 
-    are_there_changes_output = os.popen("git diff --name-only --cached").read()  # str with the output
+    are_there_changes_output:str = os.popen("git diff --name-only --cached").read()  # str with the output
     if len(are_there_changes_output) == 0:
         print("looks like theres no changes to commit.")
         return False
