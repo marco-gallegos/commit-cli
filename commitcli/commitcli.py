@@ -48,13 +48,11 @@ def create_commit_message(configuration_manager: ConfigManager) -> bool:
         return False
 
     commit_msg.get_answers()
-    commit_string = commit_msg.get_commit_string()
+    commit_string:str|None = commit_msg.get_commit_string()
 
-    if commit_string:
+    if commit_string is not None:
         print("commiting...")
         print("=="*30)
         os.system(f"git commit -m '{commit_string}'")
-        # print(commit_string)
-        # print("done :)")
 
     return True
