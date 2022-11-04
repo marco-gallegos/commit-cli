@@ -6,9 +6,11 @@
     This file contains a class to abstract a commit message
 """
 import inquirer
-from commitcli.common import changes_choices_by_format, get_questions
+from commitcli.common import changes_choices_by_format, get_questions, get_preselected_questions, PreselectedQuestion
 
 from configmanager.config_manager import ConfigManager
+
+# just for type hints
 
 
 class CommitMessage(object):
@@ -106,11 +108,17 @@ class CommitMessage(object):
             return False
 
 
-    def get_preselected_answers(self) -> dict[str,str]:
-        """check for possible preselected answers according the current format"""
-        preselected_answers:dict[str,str]
-        # TODO: doing
-
+    def get_preselected_answers(self) -> list[dict]:
+        """check for possible preselected answers according the current format, make quuestions if is needed"""
+        preselected_answers:list[dict] = []
+        
+        preselected_questions:list[PreselectedQuestion] = get_preselected_questions(format=self.format)
+        
+        for preselected_question in preselected_questions:
+            question = preselected_question.get_value(self.config.moduleManager) 
+            if question :
+                preselected_answers.append(question)
+        
         return preselected_answers
 
 
@@ -120,16 +128,24 @@ class CommitMessage(object):
         2 - request filtered answers
         3 - set up all answers
         """
-        preselected_answers:dict = self.get_easy_answers()
-        answers:dict[str,str] = inquirer.prompt(self.questions[self.format])
-        if answers:
+        # if we had preselected result then we can get them here
+        preselected_answers:list[dict] = self.get_preselected_answers()
+        print("preselected answers", preselected_answers)
+
+        request_optionals = self.config.get_config("avoid_optionals") 
+
+        # -----------------
+
+        # answers = inquirer.prompt(preselected_questions)
+
+        #if answers:
             # if self.format in self.optional_questions and not self.config.get_config("avoid_optionals"):
                 # for question in self.optional_questions[self.format]:
                     # set_question = input(f"set the {question.name} (y,*): ")
                     # if set_question.lower() == 'y':
                         # temp_dict = inquirer.prompt({question})
                         # answers.update(temp_dict)
-            self.set_answers(answers)
+        #    self.set_answers(answers)
 
 
     def can_generate_string(self) -> bool:

@@ -133,7 +133,7 @@ class ConfigManager(object):
                 return False
         return False 
 
-    def get_config(self, name: str) -> str or bool:
+    def get_config(self, name: str) -> str or bool or None:
         if self.config is not None and self.config.config is not None and self.config.config[name] is not None:
             return self.config.config[name]
         else:

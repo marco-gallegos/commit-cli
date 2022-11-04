@@ -10,7 +10,7 @@ class ModuleConfig(object):
     use_count:int
 
     def __init__(self, name:str|None = None, date:int = 0, last_used:int = 0, use_count:int = 1) -> None:
-        print("constructing", [name, date, last_used, use_count])
+        # print("constructing", [name, date, last_used, use_count])
         self.name:str|None = name
         self.date:int|None = date
         self.last_used:int =  last_used
@@ -69,7 +69,7 @@ class ModuleManager(object):
             for content in file_content:
                 content_as_list:list[str] = content.replace("\n","").split(",")
                 if len(content_as_list) >= 4:
-                    print(content_as_list[0], content_as_list[1], content_as_list[2], content_as_list[3])
+                    # print(content_as_list[0], content_as_list[1], content_as_list[2], content_as_list[3])
                     try:
                         module:ModuleConfig = ModuleConfig(
                                 content_as_list[0], int(content_as_list[1]),
