@@ -181,3 +181,4 @@ class CommitMessage(object):
             return self.tag and self.header
         else:
             return False
+
