@@ -25,7 +25,7 @@ def get_preselected_module(moduleManager:ModuleManager) -> dict[str, str] | None
     
     # here we expect a array so we want make a questio
     questions = [
-        inquirer.List(name="Module", message="your module is here?", choices=module_options_list)
+        inquirer.List(name="module", message="your module is here?", choices=module_options_list)
     ]
     answer = inquirer.prompt(questions)
     return answer
@@ -171,8 +171,7 @@ def get_questions(format:str, already_know_answers:list[str], optionals:bool = F
         format_questions = questions_to_search[format]
         for question_to_make in format_questions:
             if question_to_make not in already_know_answers:
+                print(f"adding : {question_to_make}")
                 questions.append(format_questions[question_to_make])
     
-    # print("questions to make",{f"{format}": questions})
-
     return {f"{format}": questions}

@@ -128,26 +128,39 @@ class CommitMessage(object):
         2 - request filtered answers
         3 - set up all answers
         """
+        # ------- automatic answers detection ----------
+
         # if we had preselected result then we can get them here
         preselected_answers:list[dict] = self.get_preselected_answers()
-        print("preselected answers", preselected_answers)
+        # ------ automatic answers segregation and formating ---------
+        request_optionals:bool = True if self.config.get_config("avoid_optionals") else False 
+        
+        preselected_answers_key_list:list[str] = [ list(key.keys())[0] for key in preselected_answers ]
 
-        request_optionals = self.config.get_config("avoid_optionals") 
+        # ------ regular question prompting ------------
 
-        # -----------------
+        normal_questions = get_questions(self.format, preselected_answers_key_list, request_optionals)
 
-        normal_questions = get_questions(self.format, preselected_answers, request_optionals)
+        normal_answers = inquirer.prompt(normal_questions[self.format])
+        
+        print(normal_answers, preselected_answers)
 
-        answers = inquirer.prompt(normal_questions)
+        answers:dict = dict()
+        for preselected_answer in preselected_answers:
+            answers.update(preselected_answer)
+        answers.update(normal_answers)
+        
+        print(answers)
 
         if answers:
-            pass
-            # if self.format in self.optional_questions and not self.config.get_config("avoid_optionals"):
+            # TODO: handle optional
+            # if self.format in self.optional_questions and not request_optionals:
                 # for question in self.optional_questions[self.format]:
                     # set_question = input(f"set the {question.name} (y,*): ")
                     # if set_question.lower() == 'y':
                         # temp_dict = inquirer.prompt({question})
                         # answers.update(temp_dict)
+            # after optional question handling make a update
             self.set_answers(answers)
 
 
