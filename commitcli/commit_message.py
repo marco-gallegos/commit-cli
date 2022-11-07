@@ -136,16 +136,19 @@ class CommitMessage(object):
 
         # -----------------
 
-        # answers = inquirer.prompt(preselected_questions)
+        normal_questions = get_questions(self.format, preselected_answers, request_optionals)
 
-        #if answers:
+        answers = inquirer.prompt(normal_questions)
+
+        if answers:
+            pass
             # if self.format in self.optional_questions and not self.config.get_config("avoid_optionals"):
                 # for question in self.optional_questions[self.format]:
                     # set_question = input(f"set the {question.name} (y,*): ")
                     # if set_question.lower() == 'y':
                         # temp_dict = inquirer.prompt({question})
                         # answers.update(temp_dict)
-        #    self.set_answers(answers)
+            self.set_answers(answers)
 
 
     def can_generate_string(self) -> bool:
