@@ -28,6 +28,14 @@ def get_preselected_module(moduleManager:ModuleManager) -> dict[str, str] | None
         inquirer.List(name="module", message="your module is here?", choices=module_options_list)
     ]
     answer = inquirer.prompt(questions)
+
+    print(answer)
+
+    if answer and answer['module'] == 'no':
+        answer.pop('module')
+    
+    print(answer)
+    
     return answer
 
 

@@ -1,5 +1,6 @@
 .idea/*
 *.ignore.*
+.env
 
 # own files
 *.commitcli_modules*

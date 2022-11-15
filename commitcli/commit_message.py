@@ -143,14 +143,14 @@ class CommitMessage(object):
 
         normal_answers = inquirer.prompt(normal_questions[self.format])
         
-        print(normal_answers, preselected_answers)
+        # print(normal_answers, preselected_answers)
 
         answers:dict = dict()
         for preselected_answer in preselected_answers:
             answers.update(preselected_answer)
         answers.update(normal_answers)
         
-        print(answers)
+        # print(answers)
 
         if answers:
             # TODO: handle optional
@@ -181,4 +181,7 @@ class CommitMessage(object):
             return self.tag and self.header
         else:
             return False
+    
 
+    def update_preselected_data(self):
+        print(self)
