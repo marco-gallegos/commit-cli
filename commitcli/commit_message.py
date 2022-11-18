@@ -9,6 +9,7 @@ import inquirer
 from commitcli.common import changes_choices_by_format, get_questions, get_preselected_questions, PreselectedQuestion
 
 from configmanager.config_manager import ConfigManager
+from configmanager.format_module_manager import ModuleConfig
 
 # just for type hints
 
@@ -184,4 +185,35 @@ class CommitMessage(object):
     
 
     def update_preselected_data(self):
-        print(self)
+        """Update modules file
+        1 - get used module
+        2 - get modules in file (in this point this module should exist in module manager)
+        3 - search for our module inside the result
+            3.1 -  if exist update counter and last used
+            3.2 - if not exists addit to the list
+                a - limit number of modules to write to 10
+        4 - save the modules infomation
+        """
+        print(f"checking odule: {self.module}")
+
+        current_modules:list = self.config.moduleManager.get_modules()
+        
+        modules_as_csv = "Cd,12,12,12\n"
+
+        print("***"*30)
+        for module in current_modules:
+            if module.name == self.module:
+                module.last_used = "666"
+                module.use_count += 1
+            modules_as_csv += f"{module.name},{module.date},{module.last_used},{module.use_count}\n"
+
+        
+        # overwrite file
+        file = open(".xdxd", "w")
+
+        file.write(modules_as_csv)
+        file.close()
+
+
+
+

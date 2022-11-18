@@ -56,10 +56,10 @@ def create_commit_message(configuration_manager: ConfigManager, onlylog: bool) -
         return False
 
     print("commiting...")
-    print("=="*30)
+    # print("=="*30)
     
 
-    commit_command = f"git commit -m '{commit_string}'"
+    commit_command:str = f"git commit -m '{commit_string}'"
 
     if onlylog and onlylog is True:
         print(commit_command)
