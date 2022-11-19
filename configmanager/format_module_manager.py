@@ -18,8 +18,8 @@ class ModuleConfig(object):
         # print("finish constructing")
 
 
-    #def __str__(self) -> str:
-    #    return f"{self.date} {self.last_used} {self.name} {self.use_count}"
+    def __str__(self) -> str:
+        return f"{self.name} {self.date} {self.last_used} {self.use_count}"
 
 
 

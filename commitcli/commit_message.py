@@ -10,9 +10,7 @@ from commitcli.common import changes_choices_by_format, get_questions, get_prese
 
 from configmanager.config_manager import ConfigManager
 from configmanager.format_module_manager import ModuleConfig
-
-# just for type hints
-
+import pendulum
 
 class CommitMessage(object):
     """This clas is a abstraction of a commit message,
@@ -194,22 +192,32 @@ class CommitMessage(object):
                 a - limit number of modules to write to 10
         4 - save the modules infomation
         """
-        print(f"checking odule: {self.module}")
-
         current_modules:list = self.config.moduleManager.get_modules()
-        
-        modules_as_csv = "Cd,12,12,12\n"
+        new_modules:list[ModuleConfig] = []
+        current_date = pendulum.now()
+        exist_in_module_list:bool = False
 
-        print("***"*30)
+        modules_as_csv = ""
+
         for module in current_modules:
-            if module.name == self.module:
-                module.last_used = "666"
+            if module.name.lower() == self.module.lower():
+                module.last_used = current_date.int_timestamp
                 module.use_count += 1
+                exist_in_module_list = True
+            new_modules.append(module)
+        
+        if exist_in_module_list is False:
+            new_module = ModuleConfig(self.module, current_date.int_timestamp, current_date.int_timestamp, 1)
+            new_modules.append(new_module)
+
+        new_modules.sort(key=lambda module: module.last_used, reverse=True)
+
+        for module in new_modules:
             modules_as_csv += f"{module.name},{module.date},{module.last_used},{module.use_count}\n"
 
         
         # overwrite file
-        file = open(".xdxd", "w")
+        file = open(".commitcli_modules", "w")
 
         file.write(modules_as_csv)
         file.close()
