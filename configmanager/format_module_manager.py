@@ -60,7 +60,7 @@ class ModuleManager(object):
     def load_modules(self) -> list[ModuleConfig] | None :
         current_file:str|None = self.current_file()
 
-        if  current_file is not None:
+        if current_file is not None:
             modules_file:TextIOWrapper = open(current_file, "r")
             file_content:list[str] = modules_file.readlines()
             modules_file.close()

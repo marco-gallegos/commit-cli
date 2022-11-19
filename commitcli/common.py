@@ -11,23 +11,25 @@ class PreselectedQuestion(object):
 
 def get_preselected_module(moduleManager:ModuleManager) -> dict[str, str] | None:
     """function to get the preselected Module"""
-
     # get module lis
     module_list:list[ModuleConfig] = moduleManager.get_modules()
+    answer:dict = {}
 
     module_options_list = [
         ("No, let me write it", "no")
     ]
-
-    module_options_temporal_list = [ (x.name, x.name) for x in  module_list ]
-
-    module_options_list += module_options_temporal_list
     
-    # here we expect a array so we want make a questio
-    questions = [
-        inquirer.List(name="module", message="your module is here?", choices=module_options_list)
-    ]
-    answer = inquirer.prompt(questions)
+    if module_list and len(module_list) > 0:
+        module_options_temporal_list = [ (x.name, x.name) for x in  module_list ]
+
+        module_options_list += module_options_temporal_list
+        
+        # here we expect a array so we want make a questio
+        questions = [
+            inquirer.List(name="module", message="your module is here?", choices=module_options_list)
+        ]
+
+        answer = inquirer.prompt(questions)
 
     if answer and answer['module'] == 'no':
         answer.pop('module')
@@ -175,7 +177,7 @@ def get_questions(format:str, already_know_answers:list[str], optionals:bool = F
         format_questions = questions_to_search[format]
         for question_to_make in format_questions:
             if question_to_make not in already_know_answers:
-                print(f"adding : {question_to_make}")
+                # print(f"adding : {question_to_make}")
                 questions.append(format_questions[question_to_make])
     
     return {f"{format}": questions}

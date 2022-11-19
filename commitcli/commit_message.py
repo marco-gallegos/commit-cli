@@ -198,13 +198,14 @@ class CommitMessage(object):
         exist_in_module_list:bool = False
 
         modules_as_csv = ""
-
-        for module in current_modules:
-            if module.name.lower() == self.module.lower():
-                module.last_used = current_date.int_timestamp
-                module.use_count += 1
-                exist_in_module_list = True
-            new_modules.append(module)
+        
+        if current_modules and len(current_modules) > 0:
+            for module in current_modules:
+                if module.name.lower() == self.module.lower():
+                    module.last_used = current_date.int_timestamp
+                    module.use_count += 1
+                    exist_in_module_list = True
+                new_modules.append(module)
         
         if exist_in_module_list is False:
             new_module = ModuleConfig(self.module, current_date.int_timestamp, current_date.int_timestamp, 1)
