@@ -212,6 +212,8 @@ class CommitMessage(object):
 
         new_modules.sort(key=lambda module: module.last_used, reverse=True)
 
+        new_modules = new_modules[0:9:1]
+
         for module in new_modules:
             modules_as_csv += f"{module.name},{module.date},{module.last_used},{module.use_count}\n"
 
