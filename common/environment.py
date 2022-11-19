@@ -14,14 +14,14 @@ class EnviromentConfiguration(object):
         
         file_environment = os.getenv("environment")
         
-        print(file_environment)
+        # print(file_environment)
 
         if file_environment :
             self.current_environment = file_environment
 
     def can_log_data(self) -> bool:
         should_log:bool = False if self.current_environment == "production" else True
-        print(f"should log {should_log}")
+        # print(f"should log {should_log}")
         return should_log
 
 

@@ -29,13 +29,9 @@ def get_preselected_module(moduleManager:ModuleManager) -> dict[str, str] | None
     ]
     answer = inquirer.prompt(questions)
 
-    print(answer)
-
     if answer and answer['module'] == 'no':
         answer.pop('module')
-    
-    print(answer)
-    
+       
     return answer
 
 
