@@ -4,15 +4,15 @@ import os
 
 
 class ModuleConfig(object):
-    name:str|None
-    date:int|None
+    name:str
+    date:int
     last_used:int
     use_count:int
 
-    def __init__(self, name:str|None = None, date:int = 0, last_used:int = 0, use_count:int = 1) -> None:
+    def __init__(self, name:str = None, date:int = 0, last_used:int = 0, use_count:int = 1) -> None:
         # print("constructing", [name, date, last_used, use_count])
-        self.name:str|None = name
-        self.date:int|None = date
+        self.name:str = name
+        self.date:int = date
         self.last_used:int =  last_used
         self.use_count:int = use_count
         # print("finish constructing")
@@ -27,7 +27,7 @@ class ModuleManager(object):
     """
     File format
     """
-    _file:str|None
+    _file:str
 
 
     def __init__(self) -> None:
@@ -35,7 +35,7 @@ class ModuleManager(object):
         self.load_modules()
 
 
-    def current_file(self) -> str | None :
+    def current_file(self) -> str :
         """this function return the fullpath of the file to store
         the configuration
 
@@ -57,7 +57,7 @@ class ModuleManager(object):
         return True if exist else False
 
 
-    def load_modules(self) -> list[ModuleConfig] | None :
+    def load_modules(self) -> list[ModuleConfig]:
         current_file:str|None = self.current_file()
 
         if current_file is not None:
@@ -87,7 +87,7 @@ class ModuleManager(object):
         pass
 
 
-    def get_modules(self) -> list[ModuleConfig] | None:
+    def get_modules(self) -> list[ModuleConfig]:
         return self.load_modules()
 
 

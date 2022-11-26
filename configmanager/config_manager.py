@@ -20,9 +20,9 @@ class ConfigManager(object):
 
     def __init__(
             self, file: str = '.commitclirc',
-            config: Configuration|None = None,
-            override_config:dict|None = None,
-            moduleManager:ModuleManager|None = None,
+            config: Configuration = None,
+            override_config:dict = None,
+            moduleManager:ModuleManager = None,
             loadModuleManager:bool = False
         ) -> None:
         self._file:str = file
@@ -114,7 +114,7 @@ class ConfigManager(object):
         file.close()
         return True
 
-    def init_config(self, force_reload: bool = False, override_config: dict|None = None) -> bool:
+    def init_config(self, force_reload: bool = False, override_config: dict = None) -> bool:
         """Method to initialize the class, triggering the load of the file or load
         creating a defaul config and save it on the file.
 

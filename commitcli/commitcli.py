@@ -20,7 +20,7 @@ from common.logger import logger
 #    type=click.Choice([], case_sensitive=False)
 # )
 @click.option('-log', '--onlylog', required=False, is_flag=True, help="Avoid confirmimg the message only make a lopg from the final message" )
-def main(nooptionals: bool, onlylog: bool) -> bool | None:
+def main(nooptionals: bool, onlylog: bool) -> bool:
     """Function to make commits, its a wrapper for the 'git commit' command
     this uses the '~/.commitclirc' file to store and manage the config.
 

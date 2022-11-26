@@ -9,7 +9,7 @@ class PreselectedQuestion(object):
         self.get_value = get_function
 
 
-def get_preselected_module(moduleManager:ModuleManager) -> dict[str, str] | None:
+def get_preselected_module(moduleManager:ModuleManager) -> dict[str, str]:
     """function to get the preselected Module"""
     # get module lis
     module_list:list[ModuleConfig] = moduleManager.get_modules()

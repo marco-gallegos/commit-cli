@@ -24,11 +24,11 @@ class CommitMessage(object):
         self,
         format: str = "cc",
         configuration_manager: ConfigManager = ConfigManager(),
-        tag: str|None = None,
-        module: str|None = None,
-        header: str|None = None,
-        body: str|None = None,
-        footer: str|None = None,
+        tag: str = None,
+        module: str = None,
+        header: str = None,
+        body: str = None,
+        footer: str = None,
     ):
         """Constructor of the class
 
@@ -52,7 +52,7 @@ class CommitMessage(object):
         self.choices:dict[str,list[tuple]] = changes_choices_by_format
 
 
-    def get_commit_string(self)->str|None:
+    def get_commit_string(self)->str:
         """Method to return the formathed commit string
 
         Returns:
