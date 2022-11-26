@@ -1,6 +1,6 @@
 # comment
 #
-inquirer==2.8
+inquirer
 click
 pytest
 coverage

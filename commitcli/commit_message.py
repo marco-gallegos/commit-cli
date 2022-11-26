@@ -220,7 +220,7 @@ class CommitMessage(object):
 
         
         # overwrite file
-        file = open(".commitcli_modules", "w")
+        file = open(".ignore.commitcli_modules", "w")
 
         file.write(modules_as_csv)
         file.close()

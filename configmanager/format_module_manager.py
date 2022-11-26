@@ -31,7 +31,7 @@ class ModuleManager(object):
 
 
     def __init__(self) -> None:
-        self._file:str|None = ".commitcli_modules"
+        self._file:str|None = ".ignore.commitcli_modules"
         self.load_modules()
 
 
