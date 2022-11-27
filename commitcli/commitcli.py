@@ -10,7 +10,7 @@ import os
 from commitcli.commit_message import CommitMessage
 from configmanager.config_manager import ConfigManager
 import click
-from common.logger import logger  
+from common.logger import logger
 
 @click.command()
 @click.option('-nop', '--nooptionals', required=False, is_flag=True, help='Do not ask for optional questions')
@@ -35,6 +35,7 @@ def main(nooptionals: bool, onlylog: bool) -> bool:
     }
     configuration_manager:ConfigManager = ConfigManager(override_config=forced_config, loadModuleManager=True)
     create_commit_message(configuration_manager, onlylog)
+    return True
 
 
 def create_commit_message(configuration_manager: ConfigManager, onlylog: bool) -> bool:
