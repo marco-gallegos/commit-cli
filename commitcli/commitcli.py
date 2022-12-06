@@ -14,11 +14,6 @@ from common.logger import logger
 
 @click.command()
 @click.option('-nop', '--nooptionals', required=False, is_flag=True, help='Do not ask for optional questions')
-# @click.option(
-#    '-f', '--format', required=False, help='Format the commit message',
-#    # TODO: this need come from configuration file
-#    type=click.Choice([], case_sensitive=False)
-# )
 @click.option('-log', '--onlylog', required=False, is_flag=True, help="Avoid confirmimg the message only make a lopg from the final message" )
 def main(nooptionals: bool, onlylog: bool) -> bool:
     """Function to make commits, its a wrapper for the 'git commit' command
