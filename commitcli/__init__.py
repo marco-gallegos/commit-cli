@@ -1,1 +1,1 @@
-__all__=['commit_message','common']
+__all__=['commit_message','common', 'versions']

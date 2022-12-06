@@ -20,11 +20,9 @@ from common.versions import get_version
 def main(nooptionals: bool, onlylog: bool, version: bool) -> bool:
     """Main funtion on this module is implemented to handle a cli call """
     if version is True:
-        print("v")
-        get_version()
+        print(f"version: {get_version()}")
     else:
-        # do_a_commit(nooptionals, onlylog)
-        print("hello")
+        do_a_commit(nooptionals, onlylog)
     return True
 
 def get_current_version():
