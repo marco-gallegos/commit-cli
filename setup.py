@@ -8,6 +8,8 @@
     compile ->  python3 setup.py sdist bdist_wheel
 """
 import setuptools
+from common.versions import get_version 
+
 
 with open("readme.md", "r") as fh:
     long_description = fh.read()
@@ -15,7 +17,7 @@ with open("readme.md", "r") as fh:
 
 setuptools.setup(
     name="commitcli",
-    version="1.3.0-beta2",
+    version=get_version(),
     author="Marco A. Gallegos",
     author_email="ma_galeza@hotmail.com",
     description="commit cli for git with some formats, by default short version of odoo format",

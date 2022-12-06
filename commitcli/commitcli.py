@@ -11,15 +11,32 @@ from commitcli.commit_message import CommitMessage
 from configmanager.config_manager import ConfigManager
 import click
 from common.logger import logger
+from common.versions import get_version
 
 @click.command()
 @click.option('-nop', '--nooptionals', required=False, is_flag=True, help='Do not ask for optional questions')
 @click.option('-log', '--onlylog', required=False, is_flag=True, help="Avoid confirmimg the message only make a lopg from the final message" )
-def main(nooptionals: bool, onlylog: bool) -> bool:
+@click.option('-v', '--version', required=False, is_flag=True, help="Show the current version" )
+def main(nooptionals: bool, onlylog: bool, version: bool) -> bool:
+    """Main funtion on this module is implemented to handle a cli call """
+    if version is True:
+        print("v")
+        get_version()
+    else:
+        # do_a_commit(nooptionals, onlylog)
+        print("hello")
+    return True
+
+def get_current_version():
+    print(f"current version : {get_version()}")
+    return True
+
+
+
+def do_a_commit(nooptionals: bool, onlylog: bool) -> bool:
     """Function to make commits, its a wrapper for the 'git commit' command
     this uses the '~/.commitclirc' file to store and manage the config.
 
-    called by default for this module.
 
     :return: execution status
     :rtype: bool
@@ -30,8 +47,9 @@ def main(nooptionals: bool, onlylog: bool) -> bool:
     logger.log("INFO","forced config runing")
     logger.log("INFO", forced_config)
     configuration_manager:ConfigManager = ConfigManager(override_config=forced_config, loadModuleManager=True)
-    mesaage_created:bool = create_commit_message(configuration_manager, onlylog)
-    return True
+    message_created:bool = create_commit_message(configuration_manager, onlylog)
+    return message_created
+
 
 
 def create_commit_message(configuration_manager: ConfigManager, onlylog: bool) -> bool:
