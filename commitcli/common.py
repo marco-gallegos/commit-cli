@@ -142,6 +142,8 @@ def get_preselected_questions(format:str)-> list:
     return question_list
 
 def get_questions(format:str, already_know_answers:list[str], optionals:bool = False) -> dict[str, list]:
+    """return a unified list of questions to promt.
+    """
     questions:list = []
 
     questions_by_format:dict[str,dict] ={
@@ -171,13 +173,21 @@ def get_questions(format:str, already_know_answers:list[str], optionals:bool = F
         }
     }
 
-    questions_to_search:dict[str,dict] = questions_by_format if optionals is False else optional_questions_by_format
-
+    questions_to_search:dict[str,dict] = questions_by_format 
+    
     if format in questions_to_search:
         format_questions = questions_to_search[format]
+
         for question_to_make in format_questions:
             if question_to_make not in already_know_answers:
                 # print(f"adding : {question_to_make}")
                 questions.append(format_questions[question_to_make])
+        
+        # if we need optionals then we need extend the object but only if there exist optional answers
+        if optionals is True and format in optional_questions_by_format :
+            format_optional_questions:dict[str,dict] = optional_questions_by_format[format]
+            for optional_question in format_optional_questions:
+                if optional_question not in already_know_answers:
+                    questions.append(format_optional_questions[optional_question])
     
     return {f"{format}": questions}

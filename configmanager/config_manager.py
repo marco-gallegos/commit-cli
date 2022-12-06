@@ -26,7 +26,7 @@ class ConfigManager(object):
             loadModuleManager:bool = False
         ) -> None:
         self._file:str = file
-        self.config:Configuration|None = config
+        self.config:Configuration = config
         self.regex_clave_valor = r'[\D]+[=]{1}[\w]+'
         self.pattern_regex_clave_valor = re.compile(self.regex_clave_valor)
 
@@ -34,7 +34,7 @@ class ConfigManager(object):
         self.init_config(override_config=override_config)
 
         # module manager
-        self.moduleManager:ModuleManager|None = None 
+        self.moduleManager:ModuleManager = None 
         if loadModuleManager is True and moduleManager is None:
             self.moduleManager = ModuleManager()
         elif loadModuleManager is False and moduleManager is not None:

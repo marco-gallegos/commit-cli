@@ -24,12 +24,13 @@ def main(nooptionals: bool, onlylog: bool) -> bool:
     :return: execution status
     :rtype: bool
     """
-    logger.log("INFO", "Hello bby 7u7")
     forced_config:dict[str, bool] = {
-        "avoid_optionals": nooptionals,
+        "avoid_optionals": not nooptionals,
     }
+    logger.log("INFO","forced config runing")
+    logger.log("INFO", forced_config)
     configuration_manager:ConfigManager = ConfigManager(override_config=forced_config, loadModuleManager=True)
-    create_commit_message(configuration_manager, onlylog)
+    mesaage_created:bool = create_commit_message(configuration_manager, onlylog)
     return True
 
 
