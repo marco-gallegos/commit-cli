@@ -15,14 +15,13 @@ def get_preselected_module(moduleManager:ModuleManager) -> dict[str, str]:
     module_list:list[ModuleConfig] = moduleManager.get_modules()
     answer:dict = {}
 
-    module_options_list = [
-        ("No, let me write it", "no")
-    ]
+    module_options_list:list = []
     
     if module_list and len(module_list) > 0:
         module_options_temporal_list = [ (x.name, x.name) for x in  module_list ]
 
         module_options_list += module_options_temporal_list
+        module_options_list.insert(1,("No, let me write it", "no"))
         
         # here we expect a array so we want make a questio
         questions = [
