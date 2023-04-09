@@ -10,6 +10,8 @@ import os
 import pathlib
 import re
 
+from loguru import logger
+
 from configmanager.config import Configuration
 from configmanager.format_module_manager import ModuleManager
 
@@ -27,7 +29,7 @@ class ConfigManager(object):
         ) -> None:
         self._file:str = file
         self.config:Configuration = config
-        self.regex_clave_valor = r'[\D]+[=]{1}[\w]+'
+        self.regex_clave_valor = r'[\D]+[=]{1}[\w.]+'
         self.pattern_regex_clave_valor = re.compile(self.regex_clave_valor)
 
         # some initial starts
@@ -53,6 +55,7 @@ class ConfigManager(object):
         project_file = f"{pathlib.Path.cwd()}/{self._file}"
         return project_file if self.exist_file(project_file) else global_file
 
+
     def exist_file(self, file: str) -> bool:
         """this function returns a boolean value on true if the file
         to store the configuration
@@ -63,7 +66,8 @@ class ConfigManager(object):
         exist = os.path.exists(file)
         return True if exist else False
 
-    def stringline_to_key_value(self, string_line: str = "#comentario") -> str:
+
+    def stringline_to_key_value(self, string_line: str = "#comentario") -> tuple[str|None, str|None]:
         """This functions returns the separated values by '=' of a string in 
         format 'some=other'
 
@@ -78,9 +82,11 @@ class ConfigManager(object):
             elements = string_line.split("=")
             key= elements[0]
             value= elements[1]
+            logger.info(key, value)
         return key, value
 
-    def load_file(self, file: str) -> dict:
+
+    def load_file(self, file: str) -> dict|None:
         """Method to convert the configuration file into a dictionary
 
         :return: dictionary with al the key value files in thee file
@@ -89,9 +95,9 @@ class ConfigManager(object):
         current_file = file
         if self.exist_file(current_file):
             data_dict = {}
-            file = open(current_file, 'r')
-            file_text = file.readlines()
-            file.close()
+            file_read = open(current_file, 'r')
+            file_text = file_read.readlines()
+            file_read.close()
             for file_line in file_text:
                 file_line = file_line.replace('\n', '')
                 key, value = self.stringline_to_key_value(string_line=file_line)
@@ -114,7 +120,8 @@ class ConfigManager(object):
         file.close()
         return True
 
-    def init_config(self, force_reload: bool = False, override_config: dict = None) -> bool:
+
+    def init_config(self, force_reload: bool = False, override_config: dict|None = None) -> bool:
         """Method to initialize the class, triggering the load of the file or load
         creating a defaul config and save it on the file.
 
@@ -131,6 +138,7 @@ class ConfigManager(object):
                 self.config = Configuration(override_config=override_config)
                 self.save_file()
                 return False
+        print("config", self.config)
         return False 
 
     def get_config(self, name: str) -> str or bool or None:

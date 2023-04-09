@@ -45,6 +45,7 @@ def do_a_commit(nooptionals: bool, onlylog: bool) -> bool:
     logger.log("INFO","forced config runing")
     logger.log("INFO", forced_config)
     configuration_manager:ConfigManager = ConfigManager(override_config=forced_config, loadModuleManager=True)
+    logger.log("INFO", configuration_manager.config)
     message_created:bool = create_commit_message(configuration_manager, onlylog)
     return message_created
 
