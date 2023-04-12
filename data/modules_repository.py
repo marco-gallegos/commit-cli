@@ -1,4 +1,9 @@
 from abc import ABC, abstractmethod
+from common.logger import logger
+from configmanager.config import Configuration
+from data.db import GetDatabase
+import re
+
 
 
 class ModuleConfig(object):
@@ -20,7 +25,7 @@ class ModuleConfig(object):
         return f"{self.name} {self.date} {self.last_used} {self.use_count}"
 
 
-# thjinked to work as a interface
+# thinked to work as a interface
 class IModulesRepository(ABC):
     @abstractmethod
     def getAll(self):
@@ -33,17 +38,62 @@ class IModulesRepository(ABC):
 
 # a single db repositpry to serve in ModulesRepository
 class LocalFileDb(IModulesRepository):
-    def getAll(self):
-        pass
 
+    def __init__(self, config:Configuration):
+        # super().__init__()
+        self.db = GetDatabase(config)
+        self.regex_clave_valor = r'[\D]+[=]{1}[\w.]+'
+        self.pattern_regex_clave_valor = re.compile(self.regex_clave_valor)
+
+
+        if self.db is None:
+            raise Exception("we can not determinate the file DB")
+        # logger.log('INFO',self.db)
+
+    def getAll(self):
+        current_file:str|None = self.db
+
+        if current_file is not None:
+            modules_file:TextIOWrapper = open(current_file, "r")
+            file_content:list[str] = modules_file.readlines()
+            modules_file.close()
+            moduleList:list = []
+
+            for content in file_content:
+                content_as_list:list[str] = content.replace("\n","").split(",")
+                if len(content_as_list) >= 4:
+                    # print(content_as_list[0], content_as_list[1], content_as_list[2], content_as_list[3])
+                    try:
+                        module:ModuleConfig = ModuleConfig(
+                                content_as_list[0], int(content_as_list[1]),
+                                int(content_as_list[2]), int(content_as_list[3])
+                                )
+                        moduleList.append(module)
+                    except:
+                        print("error parsing row", content_as_list)
+
+            return moduleList
+        return None
+
+    def store(self, modules: list[ModuleConfig]):
+        pass
 
 
 # repository to expose to the consumers
 class ModulesRepository(IModulesRepository):
+    db:str|None # or new dbs
 
-    def __init__(self) -> None:
+    def __init__(self, config:Configuration) -> None:
         super().__init__()
+        self.db_repo = LocalFileDb(config)
 
-    def getAll(self):
+
+    def getAll(self) -> list[ModuleConfig]|None:
+        all = self.db_repo.getAll()
+        print(all)
+        return all
+        
+
+    def store(self):
         pass
 

@@ -12,6 +12,7 @@ from configmanager.config_manager import ConfigManager
 import click
 from common.logger import logger
 from common.versions import get_version
+from data.modules_repository import ModulesRepository
 
 @click.command()
 @click.option('-nop', '--nooptionals', required=False, is_flag=True, help='Do not ask for optional questions')
@@ -46,6 +47,15 @@ def do_a_commit(nooptionals: bool, onlylog: bool) -> bool:
     logger.log("INFO", forced_config)
     configuration_manager:ConfigManager = ConfigManager(override_config=forced_config, loadModuleManager=True)
     logger.log("INFO", configuration_manager.config)
+
+    rep = ModulesRepository(configuration_manager.config)
+
+    modules = rep.getAll()
+
+    if modules:
+        for module in modules:
+            print(module)
+
     message_created:bool = create_commit_message(configuration_manager, onlylog)
     return message_created
 
