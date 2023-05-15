@@ -1,5 +1,8 @@
 .PHONY: build clean_build upload help default
 
+# NOTE: defaut parameters value
+SCRIPT := runcommitcli.py
+
 default: build
 
 help:
@@ -33,3 +36,5 @@ watch:
 		echo "Watching $(SCRIPT) for changes..."; \
 		nodemon --watch . --ext py --exec "clear && echo 'Executing $(SCRIPT)...' && python3 $(SCRIPT)"; \
 	fi
+
+
