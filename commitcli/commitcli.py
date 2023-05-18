@@ -30,31 +30,8 @@ def get_current_version():
     print(f"current version : {get_version()}")
     return True
 
-
-
-def do_a_commit(nooptionals: bool, onlylog: bool) -> bool:
-    """Function to make commits, its a wrapper for the 'git commit' command
-    this uses the '~/.commitclirc' file to store and manage the config.
-
-
-    :return: execution status
-    :rtype: bool
-    """
-    forced_config:dict[str, bool] = {
-        "avoid_optionals": not nooptionals,
-    }
-    logger.log("INFO","forced config runing")
-    logger.log("INFO", forced_config)
-    configuration_manager:ConfigManager = ConfigManager(override_config=forced_config, loadModuleManager=True)
-    logger.log("INFO", configuration_manager.config)
-
-    message_created:bool = create_commit_message(configuration_manager, onlylog)
-    return message_created
-
-
-
-def create_commit_message(configuration_manager: ConfigManager, onlylog: bool) -> bool:
-    commit_msg:CommitMessage = CommitMessage(configuration_manager=configuration_manager)
+def validate_current_repository():
+    """Validate that we can make a commit"""
     are_there_changes:int = os.system("git status --short -uno >> /dev/null")
     if are_there_changes == 32768:
         print("there's not a git repository.")
@@ -64,6 +41,37 @@ def create_commit_message(configuration_manager: ConfigManager, onlylog: bool) -
     if len(are_there_changes_output) == 0:
         print("looks like theres no changes to commit.")
         return False
+    return True
+
+def do_a_commit(nooptionals: bool, onlylog: bool) -> bool:
+    """Function to make commits, its a wrapper for the 'git commit' command
+    this uses the '~/.commitclirc' file to store and manage the config.
+
+
+    :return: execution status
+    :rtype: bool
+    """
+    can_commit = validate_current_repository()
+    if (can_commit is not True):
+        return False
+    
+    forced_config:dict[str, bool]|None = {
+        "avoid_optionals": not nooptionals,
+    }
+    logger.log("INFO","forced config runing")
+    logger.log("INFO", forced_config)
+
+    configuration_manager:ConfigManager = ConfigManager(override_config=forced_config, loadModuleManager=True)
+    
+    logger.log("INFO", configuration_manager.config)
+
+    message_created:bool = create_commit_message(configuration_manager, onlylog)
+    return message_created
+
+
+
+def create_commit_message(configuration_manager: ConfigManager, onlylog: bool) -> bool:
+    commit_msg:CommitMessage = CommitMessage(configuration_manager=configuration_manager)
 
     commit_msg.get_answers()
     commit_string:str|None = commit_msg.get_commit_string()
