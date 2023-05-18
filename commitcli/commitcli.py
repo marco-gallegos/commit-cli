@@ -47,16 +47,6 @@ def do_a_commit(nooptionals: bool, onlylog: bool) -> bool:
     logger.log("INFO", forced_config)
     configuration_manager:ConfigManager = ConfigManager(override_config=forced_config, loadModuleManager=True)
     logger.log("INFO", configuration_manager.config)
-    
-
-    #TODO:this is testing replace the actual way to get data
-    rep = ModulesRepository(configuration_manager.config)
-
-    modules = rep.getAll()
-
-    if modules:
-        for module in modules:
-            print(module)
 
     message_created:bool = create_commit_message(configuration_manager, onlylog)
     return message_created

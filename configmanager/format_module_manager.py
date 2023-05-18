@@ -1,6 +1,7 @@
 from io import TextIOWrapper
 import pathlib
 import os
+from data.modules_repository import ModulesRepository
 
 
 class ModuleConfig(object):
@@ -28,11 +29,16 @@ class ModuleManager(object):
     File format
     """
     _file:str
+    modules:list[ModuleConfig] | None
 
 
-    def __init__(self) -> None:
+    def __init__(self, config) -> None:
         self._file:str|None = ".ignore.commitcli_modules"
-        self.load_modules()
+        
+        modulesRepository = ModulesRepository(config)
+        modulesLoaded = modulesRepository.getAll()
+        self.modules:list[ModuleConfig]|None = modulesLoaded
+
 
 
     def current_file(self) -> str :
@@ -56,7 +62,8 @@ class ModuleManager(object):
         exist = os.path.exists(file)
         return True if exist else False
 
-
+    
+    #NOTE: deprecated use module repository tech instead
     def load_modules(self) -> list[ModuleConfig]:
         current_file:str|None = self.current_file()
 
@@ -88,7 +95,8 @@ class ModuleManager(object):
 
 
     def get_modules(self) -> list[ModuleConfig]:
-        return self.load_modules()
+
+        return self.modules
 
 
 

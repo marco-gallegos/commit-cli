@@ -38,7 +38,7 @@ class ConfigManager(object):
         # module manager
         self.moduleManager:ModuleManager = None 
         if loadModuleManager is True and moduleManager is None:
-            self.moduleManager = ModuleManager()
+            self.moduleManager = ModuleManager(self.config)
         elif loadModuleManager is False and moduleManager is not None:
             self.moduleManager = moduleManager
 
