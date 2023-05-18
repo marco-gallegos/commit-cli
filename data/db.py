@@ -2,7 +2,7 @@ from configmanager.config import Configuration
 from common.constants import constants
 import pygit2
 import os
-import pathlib
+from common.logger import logger
 
 def get_git_root():
     try:
@@ -31,7 +31,7 @@ def returnFileDb(filename:str = " nt") -> str|None:
     '''This return the full file path'''
     project_file = get_git_root()
     file_name = constants['db']['filename']
-
+    
     if project_file is not None:
         project_file = f"{project_file}{file_name}"
 
@@ -40,7 +40,7 @@ def returnFileDb(filename:str = " nt") -> str|None:
 
 
 def GetDatabase (config:Configuration) -> str|None:
-    if config.config["db"] == 'file':
+    if config.config["db"] == constants["config_names"]["db"]["file"]:
         return returnFileDb()
 
     return None
