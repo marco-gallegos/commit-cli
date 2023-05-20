@@ -22,13 +22,14 @@ class ConfigManager(object):
 
     def __init__(
             self, file: str = '.commitclirc',
-            config: Configuration = None,
-            override_config:dict = None,
-            moduleManager:ModuleManager = None,
+            config: Configuration|None = None,
+            override_config:dict|None = None,
+            moduleManager:ModuleManager|None = None,
             loadModuleManager:bool = False
         ) -> None:
+
         self._file:str = file
-        self.config:Configuration = config
+        self.config:Configuration|None = config
         self.regex_clave_valor = r'[\D]+[=]{1}[\w.]+'
         self.pattern_regex_clave_valor = re.compile(self.regex_clave_valor)
 
@@ -146,4 +147,4 @@ class ConfigManager(object):
             return self.config.config[name]
         else:
             return None
-        return None
+

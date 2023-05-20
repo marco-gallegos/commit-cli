@@ -14,6 +14,7 @@ from common.logger import logger
 from common.versions import get_version
 from data.modules_repository import ModulesRepository
 
+
 @click.command()
 @click.option('-nop', '--nooptionals', required=False, is_flag=True, help='Do not ask for optional questions')
 @click.option('-log', '--onlylog', required=False, is_flag=True, help="Avoid confirmimg the message only make a lopg from the final message" )
@@ -21,16 +22,18 @@ from data.modules_repository import ModulesRepository
 def main(nooptionals: bool, onlylog: bool, version: bool) -> bool:
     """Main funtion on this module is implemented to handle a cli call """
     if version is True:
-        print(f"version: {get_version()}")
+        get_current_version()
     else:
         do_a_commit(nooptionals, onlylog)
     return True
+
 
 def get_current_version():
     print(f"current version : {get_version()}")
     return True
 
-def validate_current_repository():
+
+def validate_current_repository() -> bool:
     """Validate that we can make a commit"""
     are_there_changes:int = os.system("git status --short -uno >> /dev/null")
     if are_there_changes == 32768:
@@ -42,6 +45,7 @@ def validate_current_repository():
         print("looks like theres no changes to commit.")
         return False
     return True
+
 
 def do_a_commit(nooptionals: bool, onlylog: bool) -> bool:
     """Function to make commits, its a wrapper for the 'git commit' command
