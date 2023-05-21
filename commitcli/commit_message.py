@@ -6,6 +6,7 @@
     This file contains a class to abstract a commit message
 """
 import inquirer
+from configmanager.format_module_manager import ModuleManager
 from commitcli.common import changes_choices_by_format, get_questions, get_preselected_questions, PreselectedQuestion
 
 from configmanager.config_manager import ConfigManager
@@ -22,13 +23,14 @@ class CommitMessage(object):
     
     def __init__(
         self,
-        format: str = "cc",
+        # format: str = "cc",
+        module_manager: ModuleManager,
         configuration_manager: ConfigManager = ConfigManager(),
-        tag: str = None,
-        module: str = None,
-        header: str = None,
-        body: str = None,
-        footer: str = None,
+        tag: str|None = None,
+        module: str|None = None,
+        header: str|None= None,
+        body: str|None = None,
+        footer: str|None = None,
     ):
         """Constructor of the class
 
@@ -46,6 +48,7 @@ class CommitMessage(object):
         self.body = body
         self.footer = footer
         self.config:ConfigManager = configuration_manager
+        self.module_manager:ModuleManager = module_manager
         
         self.format = self.config.config.config['format']
 
@@ -114,7 +117,7 @@ class CommitMessage(object):
         preselected_questions:list[PreselectedQuestion] = get_preselected_questions(format=self.format)
         
         for preselected_question in preselected_questions:
-            question = preselected_question.get_value(self.config.moduleManager) 
+            question = preselected_question.get_value(self.module_manager) 
             if question :
                 preselected_answers.append(question)
         
@@ -192,7 +195,7 @@ class CommitMessage(object):
                 a - limit number of modules to write to 10
         4 - save the modules infomation
         """
-        current_modules:list = self.config.moduleManager.get_modules()
+        current_modules:list = self.module_manager.get_modules()
         new_modules:list[ModuleConfig] = []
         current_date = pendulum.now()
         exist_in_module_list:bool = False

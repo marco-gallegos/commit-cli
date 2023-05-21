@@ -13,7 +13,6 @@ import re
 from loguru import logger
 
 from configmanager.config import Configuration
-from configmanager.format_module_manager import ModuleManager
 
 
 class ConfigManager(object):
@@ -24,8 +23,6 @@ class ConfigManager(object):
             self, file: str = '.commitclirc',
             config: Configuration|None = None,
             override_config:dict|None = None,
-            moduleManager:ModuleManager|None = None,
-            loadModuleManager:bool = False
         ) -> None:
 
         self._file:str = file
@@ -35,14 +32,6 @@ class ConfigManager(object):
 
         # some initial starts
         self.init_config(override_config=override_config)
-
-        # module manager
-        self.moduleManager:ModuleManager = None 
-        if loadModuleManager is True and moduleManager is None:
-            self.moduleManager = ModuleManager(self.config)
-        elif loadModuleManager is False and moduleManager is not None:
-            self.moduleManager = moduleManager
-
 
 
     def current_file(self) -> str:

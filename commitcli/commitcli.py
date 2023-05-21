@@ -12,7 +12,7 @@ from configmanager.config_manager import ConfigManager
 import click
 from common.logger import logger
 from common.versions import get_version
-from data.modules_repository import ModulesRepository
+from configmanager.format_module_manager import ModuleManager
 
 
 @click.command()
@@ -65,27 +65,39 @@ def do_a_commit(nooptionals: bool, onlylog: bool) -> bool:
     logger.log("INFO","forced config runing")
     logger.log("INFO", forced_config)
 
-    configuration_manager:ConfigManager = ConfigManager(override_config=forced_config, loadModuleManager=True)
-    
+    configuration_manager:ConfigManager = ConfigManager(override_config=forced_config)
+
     logger.log("INFO", configuration_manager.config)
 
-    message_created:bool = create_commit_message(configuration_manager, onlylog)
+    module_manager = ModuleManager(configuration_manager.config)   
+
+    message_created:bool = False 
+    message_created = create_commit_message(configuration_manager, module_manager, onlylog)
+
     return message_created
 
 
+def create_commit_message(configuration_manager: ConfigManager, module_manager:ModuleManager, onlylog: bool) -> bool:
+    commit_msg:CommitMessage = CommitMessage(configuration_manager=configuration_manager, module_manager=module_manager)
 
-def create_commit_message(configuration_manager: ConfigManager, onlylog: bool) -> bool:
-    commit_msg:CommitMessage = CommitMessage(configuration_manager=configuration_manager)
+    commit_string:str|None = None
+    
+    try:
+        commit_msg.get_answers()
+        commit_string = commit_msg.get_commit_string()
+    except KeyboardInterrupt:
+        #BUG: this doesn works
+        print("cancelling commit.")
+    except Exception:
+        print("Cancelling commit.")
 
-    commit_msg.get_answers()
-    commit_string:str|None = commit_msg.get_commit_string()
+
 
     if commit_string is None:
         return False
 
     print("commiting...")
     # print("=="*30)
-    
 
     commit_command:str = f"git commit -m '{commit_string}'"
 
@@ -93,7 +105,7 @@ def create_commit_message(configuration_manager: ConfigManager, onlylog: bool) -
         print(commit_command)
     else:
         os.system(commit_command)
-    
+
     # update preselected files
     commit_msg.update_preselected_data()
 
