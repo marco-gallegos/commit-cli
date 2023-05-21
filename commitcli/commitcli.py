@@ -84,13 +84,13 @@ def create_commit_message(configuration_manager: ConfigManager, module_manager:M
     
     try:
         commit_msg.get_answers()
-        commit_string = commit_msg.get_commit_string()
     except KeyboardInterrupt:
         #BUG: this doesn works
         print("cancelling commit.")
     except Exception:
         print("Cancelling commit.")
 
+    commit_string = commit_msg.get_commit_string()
 
 
     if commit_string is None:
