@@ -35,6 +35,10 @@ def returnFileDb(filename:str = " nt") -> str|None:
     if project_file is not None:
         project_file = f"{project_file}{file_name}"
 
+        if os.path.exists(project_file) is False:
+            file = open(project_file, "a")
+            file.close()
+
     return project_file
 
 

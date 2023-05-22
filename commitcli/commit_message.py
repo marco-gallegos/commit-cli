@@ -184,7 +184,8 @@ class CommitMessage(object):
         else:
             return False
     
-
+    
+    #TODO: this souldnt live here -> use the repository
     def update_preselected_data(self):
         """Update modules file
         1 - get used module
