@@ -51,7 +51,7 @@ class LocalFileDb(IModulesRepository):
         # logger.log('INFO',self.db)
 
     def getAll(self):
-        current_file:str|None = self.db
+        current_file:str = self.db
 
         if current_file is not None:
             modules_file:TextIOWrapper = open(current_file, "r")
@@ -81,16 +81,15 @@ class LocalFileDb(IModulesRepository):
 
 # repository to expose to the consumers
 class ModulesRepository(IModulesRepository):
-    db:str|None # or new dbs
+    db:str # or new dbs
 
     def __init__(self, config:Configuration) -> None:
         super().__init__()
         self.db_repo = LocalFileDb(config)
 
 
-    def getAll(self) -> list[ModuleConfig]|None:
+    def getAll(self) -> list[ModuleConfig]:
         all = self.db_repo.getAll()
-        print(all)
         return all
         
 

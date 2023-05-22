@@ -26,7 +26,7 @@ class Configuration(object):
         "free",
     ]
 
-    def __init__(self, config:dict|None = None, signgpg: bool = False, override_config: dict|None = None) -> None:
+    def __init__(self, config:dict = None, signgpg: bool = False, override_config: dict = None) -> None:
         self.config = {
             'format': "cc",
             'signgpg': signgpg,

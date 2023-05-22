@@ -59,7 +59,7 @@ def do_a_commit(nooptionals: bool, onlylog: bool) -> bool:
     if (can_commit is not True):
         return False
     
-    forced_config:dict[str, bool]|None = {
+    forced_config:dict[str, bool] = {
         "avoid_optionals": not nooptionals,
     }
     logger.log("INFO","forced config runing")
@@ -80,7 +80,7 @@ def do_a_commit(nooptionals: bool, onlylog: bool) -> bool:
 def create_commit_message(configuration_manager: ConfigManager, module_manager:ModuleManager, onlylog: bool) -> bool:
     commit_msg:CommitMessage = CommitMessage(configuration_manager=configuration_manager, module_manager=module_manager)
 
-    commit_string:str|None = None
+    commit_string:str = None
     
     try:
         commit_msg.get_answers()

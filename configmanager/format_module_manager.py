@@ -28,16 +28,16 @@ class ModuleManager(object):
     """
     File format
     """
-    _file:str|None
-    modules:list[ModuleConfig] | None
+    _file:str
+    modules:list[ModuleConfig]
 
 
     def __init__(self, config) -> None:
-        self._file:str|None = ".ignore.commitcli_modules"
+        self._file:str = ".ignore.commitcli_modules"
         
         modulesRepository = ModulesRepository(config)
         modulesLoaded = modulesRepository.getAll()
-        self.modules:list[ModuleConfig]|None = modulesLoaded
+        self.modules:list[ModuleConfig] = modulesLoaded
 
 
     def update_modules(self):

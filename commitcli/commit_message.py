@@ -26,11 +26,11 @@ class CommitMessage(object):
         # format: str = "cc",
         module_manager: ModuleManager,
         configuration_manager: ConfigManager = ConfigManager(),
-        tag: str|None = None,
-        module: str|None = None,
-        header: str|None= None,
-        body: str|None = None,
-        footer: str|None = None,
+        tag: str = None,
+        module: str = None,
+        header: str = None,
+        body: str = None,
+        footer: str = None,
     ):
         """Constructor of the class
 

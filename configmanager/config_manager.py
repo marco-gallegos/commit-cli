@@ -21,12 +21,12 @@ class ConfigManager(object):
 
     def __init__(
             self, file: str = '.commitclirc',
-            config: Configuration|None = None,
-            override_config:dict|None = None,
+            config: Configuration = None,
+            override_config:dict = None,
         ) -> None:
 
         self._file:str = file
-        self.config:Configuration|None = config
+        self.config:Configuration = config
         self.regex_clave_valor = r'[\D]+[=]{1}[\w.]+'
         self.pattern_regex_clave_valor = re.compile(self.regex_clave_valor)
 
@@ -57,7 +57,7 @@ class ConfigManager(object):
         return True if exist else False
 
 
-    def stringline_to_key_value(self, string_line: str = "#comentario") -> tuple[str|None, str|None]:
+    def stringline_to_key_value(self, string_line: str = "#comentario") -> tuple[str, str]:
         """This functions returns the separated values by '=' of a string in 
         format 'some=other'
 
@@ -76,7 +76,7 @@ class ConfigManager(object):
         return key, value
 
 
-    def load_file(self, file: str) -> dict|None:
+    def load_file(self, file: str) -> dict:
         """Method to convert the configuration file into a dictionary
 
         :return: dictionary with al the key value files in thee file
@@ -111,7 +111,7 @@ class ConfigManager(object):
         return True
 
 
-    def init_config(self, force_reload: bool = False, override_config: dict|None = None) -> bool:
+    def init_config(self, force_reload: bool = False, override_config: dict = None) -> bool:
         """Method to initialize the class, triggering the load of the file or load
         creating a defaul config and save it on the file.
 

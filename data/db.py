@@ -27,7 +27,7 @@ def exist_file(file: str) -> bool:
         return True if exist else False
 
 
-def returnFileDb(filename:str = " nt") -> str|None:
+def returnFileDb(filename:str = " nt") -> str:
     '''This return the full file path'''
     project_file = get_git_root()
     file_name = constants['db']['filename']
@@ -43,7 +43,7 @@ def returnFileDb(filename:str = " nt") -> str|None:
 
 
 
-def GetDatabase (config:Configuration) -> str|None:
+def GetDatabase (config:Configuration) -> str:
     if config.config["db"] == constants["config_names"]["db"]["file"]:
         return returnFileDb()
 
