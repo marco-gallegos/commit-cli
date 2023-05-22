@@ -37,7 +37,8 @@ setuptools.setup(
         'click',
         'loguru',
         'pendulum',
-        'python-dotenv'
+        'pygit2',
+        'python-dotenv',
     ],
     # hacer que setup tools genere un comando cli
     entry_points={
