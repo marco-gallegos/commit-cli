@@ -9,3 +9,4 @@ loguru
 python-dotenv
 pendulum
 pygit2
+pymongo
