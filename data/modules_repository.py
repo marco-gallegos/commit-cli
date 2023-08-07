@@ -3,6 +3,7 @@ from common.logger import logger
 from configmanager.config import Configuration
 from data.db import GetDatabase
 import re
+import pprint
 
 # new imports
 from pymongo import MongoClient
@@ -55,7 +56,7 @@ class LocalFileDb(IModulesRepository):
             raise Exception("we can not determinate the file DB")
         # logger.log('INFO',self.db)
 
-    def getAll(self):
+    def getAll(self) -> List[ModuleConfig]:
         current_file:str = self.db
 
         if current_file is not None:
@@ -94,28 +95,32 @@ class LocalFileDb(IModulesRepository):
 class MongoDbModulesRepository(IModulesRepository):
     def __init__(self, config: Configuration) -> None:
         super().__init__()
-        print("init mongo")
-        print(config)
-        self.db_client = MongoClient(config.mongo_uri)  # Replace 'mongo_uri' with your MongoDB connection URI
-        self.db = self.db_client[config.db_name]  # Replace 'db_name' with your MongoDB database name
+        self.db_client = MongoClient(host=config.config.db_url, port=int(config.config.db_port))
+        self.db = self.db_client[config.config.db_name]  # Replace 'db_name' with your MongoDB database name
+        logger.log("INFO", self.db)
 
     def getAll(self) -> List[ModuleConfig]:
         modules_collection = self.db["modules"]
+        logger.log("INFO", modules_collection)
         all_modules = modules_collection.find()
 
+        logger.log("INFO", all_modules)
         module_list = []
-        for module_doc in all_modules:
+        for module_doc in modules_collection.find():
+            logger.log("INFO", "module")
+            pprint.pprint(module_doc)
             try:
                 module = ModuleConfig(
-                    module_doc["field1"],
-                    int(module_doc["field2"]),
-                    int(module_doc["field3"]),
-                    int(module_doc["field4"])
+                    module_doc["name"],
+                    int(module_doc["date"]),
+                    int(module_doc["last_used"]),
+                    int(module_doc["use_count"])
                 )
                 module_list.append(module)
             except Exception as e:
                 print("Error parsing document:", e)
-
+        
+        logger.log("INFO","returning")
         return module_list
 
     def store(self, modules: List[ModuleConfig]):
@@ -141,8 +146,12 @@ class ModulesRepository(IModulesRepository):
 
     def __init__(self, config:Configuration) -> None:
         super().__init__()
-        self.db_repo = LocalFileDb(config)
-        # self.db_repo = MongoDbModulesRepository(config)
+
+        #TODO: improve this
+        if config.config.db == "mongodb":
+            self.db_repo = MongoDbModulesRepository(config)
+        else:
+            self.db_repo = LocalFileDb(config)
 
 
     def getAll(self) -> list[ModuleConfig]:

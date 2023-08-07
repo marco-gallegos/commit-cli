@@ -14,11 +14,12 @@ class TypeConfigurationConfig(object):
     db:str
     db_url:str
     db_port:str
+    db_name:str
     db_user:str
     db_password:str
     
     def __init__(self, format='cc', signgpg=False, avoid_optionals=False,
-                 db='localfile', db_url='localhost', db_port='27017',
+                 db='localfile', db_url='localhost', db_port='27017', db_name='commitcli',
                  db_user='', db_password=''):
         self.format = format
         self.signgpg = signgpg
@@ -26,6 +27,7 @@ class TypeConfigurationConfig(object):
         self.db = db
         self.db_url = db_url
         self.db_port = db_port
+        self.db_name = db_name
         self.db_user = db_user
         self.db_password = db_password
 
@@ -65,7 +67,7 @@ class Configuration(object):
             
             self.config['db'] = config['db'].lower() if 'db' in config else self.config['db']
             self.config['db_url'] = config['db_url'].lower() if 'db_url' in config else self.config['db_url']
-            self.config['db_port'] = config['db_port'] if 'db_port' in config else ""
+            self.config['db_port'] = config['db_port'] if 'db_port' in config else self.config["db_port"]
             self.config['db_user'] = config['db_user'] if 'db_user' in config else self.config['db_user']
             self.config['db_password'] = config['db_password'] if 'db_password' in config else self.config['db_password']
 
@@ -92,7 +94,8 @@ class Configuration(object):
         """
         return f"configuracion->  format: {self.config['format']} || sign: {self.config['signgpg']}" \
                 f" || avoid_optionals: {self.config['avoid_optionals']} \ndb : {self.config['db']}" \
-                f"\ndb url: {self.config['db_url']}"
+                f"\ndb url: {self.config['db_url']}" \
+                f"\ndb port: {self.config['db_port']}"
 
 
     def can_sign_gpg(self)->bool:

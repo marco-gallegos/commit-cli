@@ -67,9 +67,6 @@ def do_a_commit(nooptionals: bool, onlylog: bool) -> bool:
 
     configuration_manager:ConfigManager = ConfigManager(override_config=forced_config)
 
-    # print(configuration_manager.config)
-    # return True
-
     logger.log("INFO", configuration_manager.config)
 
     module_manager = ModuleManager(configuration_manager.config)   
@@ -100,7 +97,6 @@ def create_commit_message(configuration_manager: ConfigManager, module_manager:M
         return False
 
     print("commiting...")
-    # print("=="*30)
 
     commit_command:str = f"git commit -m '{commit_string}'"
 
