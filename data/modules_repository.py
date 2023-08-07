@@ -4,6 +4,11 @@ from configmanager.config import Configuration
 from data.db import GetDatabase
 import re
 
+# new imports
+from pymongo import MongoClient
+# from bson.objectid import ObjectId
+from typing import List
+
 
 
 class ModuleConfig(object):
@@ -79,6 +84,57 @@ class LocalFileDb(IModulesRepository):
         pass
 
 
+
+
+# ===================================================================
+
+# Assuming you have a ModuleConfig class defined somewhere in your code.
+# You can import it here to use it in the class below.
+
+class MongoDbModulesRepository(IModulesRepository):
+    def __init__(self, config: Configuration) -> None:
+        super().__init__()
+        print("init mongo")
+        print(config)
+        self.db_client = MongoClient(config.mongo_uri)  # Replace 'mongo_uri' with your MongoDB connection URI
+        self.db = self.db_client[config.db_name]  # Replace 'db_name' with your MongoDB database name
+
+    def getAll(self) -> List[ModuleConfig]:
+        modules_collection = self.db["modules"]
+        all_modules = modules_collection.find()
+
+        module_list = []
+        for module_doc in all_modules:
+            try:
+                module = ModuleConfig(
+                    module_doc["field1"],
+                    int(module_doc["field2"]),
+                    int(module_doc["field3"]),
+                    int(module_doc["field4"])
+                )
+                module_list.append(module)
+            except Exception as e:
+                print("Error parsing document:", e)
+
+        return module_list
+
+    def store(self, modules: List[ModuleConfig]):
+        modules_collection = self.db["modules"]
+        modules_data = []
+        for module in modules:
+            module_data = {
+                "field1": module.field1,
+                "field2": module.field2,
+                "field3": module.field3,
+                "field4": module.field4
+            }
+            modules_data.append(module_data)
+
+        result = modules_collection.insert_many(modules_data)
+        return result.inserted_ids
+# ===================================================================
+
+
 # repository to expose to the consumers
 class ModulesRepository(IModulesRepository):
     db:str # or new dbs
@@ -86,6 +142,7 @@ class ModulesRepository(IModulesRepository):
     def __init__(self, config:Configuration) -> None:
         super().__init__()
         self.db_repo = LocalFileDb(config)
+        # self.db_repo = MongoDbModulesRepository(config)
 
 
     def getAll(self) -> list[ModuleConfig]:

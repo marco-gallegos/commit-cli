@@ -49,12 +49,3 @@ class ModuleManager(object):
         return self.modules
 
 
-
-if __name__ == "__main__":
-    moduleManager:ModuleManager = ModuleManager()
-    # row:ModuleConfig = ModuleConfig("tmti", 10, 9, 1)
-    row:ModuleConfig = ModuleConfig()
-    print("=="*100)
-    #print(row)
-    #print(moduleManager.get_modules())
-

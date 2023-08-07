@@ -7,18 +7,42 @@
 """
 import os
 
+class TypeConfigurationConfig(object):
+    format:str
+    signgpg:bool
+    avoid_optionals: bool
+    db:str
+    db_url:str
+    db_port:str
+    db_user:str
+    db_password:str
+    
+    def __init__(self, format='cc', signgpg=False, avoid_optionals=False,
+                 db='localfile', db_url='localhost', db_port='27017',
+                 db_user='', db_password=''):
+        self.format = format
+        self.signgpg = signgpg
+        self.avoid_optionals = avoid_optionals
+        self.db = db
+        self.db_url = db_url
+        self.db_port = db_port
+        self.db_user = db_user
+        self.db_password = db_password
+
+    def __getitem__(self, clave):
+        if hasattr(self, clave):
+            return getattr(self, clave)
+        else:
+            raise KeyError(f"'TypeConfigurationConfig' object has no attribute '{clave}'")
+
+    def __setitem__(self, clave, valor):
+        if hasattr(self, clave):
+            setattr(self, clave, valor)
+        else:
+            raise KeyError(f"'TypeConfigurationConfig' object has no attribute '{clave}'")
 
 class Configuration(object):
-    config: dict = {
-        "format": None,
-        "signgpg": None,
-        "avoid_optionals": False,
-        "db": "localfile",
-        "db_url": None,
-        "db_port": None,
-        "db_user": None,
-        "db_password": None
-    }
+    config:TypeConfigurationConfig
     supported_formats: list = [
         "odoo",
         "sgc",
@@ -26,24 +50,14 @@ class Configuration(object):
         "free",
     ]
 
-    def __init__(self, config:dict = None, signgpg: bool = False, override_config: dict = None) -> None:
-        self.config = {
-            'format': "cc",
-            'signgpg': signgpg,
-            'avoid_optionals': override_config['avoid_optionals'] if override_config else False,
-            "db": "localfile",
-            "db_url": None,
-            "db_port": None,
-            "db_user": None,
-            "db_password": None
-        }
+    supported_db: list = [
+        "localfile",
+        "mongodb",
+    ]
 
-        self.supported_formats = [
-            "odoo",
-            "sgc",
-            "cc",
-            "free",
-        ]
+    def __init__(self, config:dict = None, signgpg: bool = False, override_config: dict = None) -> None:
+        avoid_optionals = override_config['avoid_optionals'] if override_config else False
+        self.config:TypeConfigurationConfig = TypeConfigurationConfig(signgpg= signgpg, avoid_optionals= avoid_optionals)
 
         if config:
             self.config['format'] = config['format'].lower() if 'format' in config else self.config['format']
@@ -51,9 +65,9 @@ class Configuration(object):
             
             self.config['db'] = config['db'].lower() if 'db' in config else self.config['db']
             self.config['db_url'] = config['db_url'].lower() if 'db_url' in config else self.config['db_url']
-            self.config['db_port'] = config['db_port'].lower() if 'db_port' in config else self.config['db_port']
-            self.config['db_user'] = config['db_user'].lower() if 'db_user' in config else self.config['db_user']
-            self.config['db_password'] = config['db_password'].lower() if 'db_password' in config else self.config['db_password']
+            self.config['db_port'] = config['db_port'] if 'db_port' in config else ""
+            self.config['db_user'] = config['db_user'] if 'db_user' in config else self.config['db_user']
+            self.config['db_password'] = config['db_password'] if 'db_password' in config else self.config['db_password']
 
             if self.config['signgpg'] and not self.can_sign_gpg():
                 print("Tu configuracion solicita firmar commits pero git no esta configurado")
@@ -77,7 +91,7 @@ class Configuration(object):
         :rtype: str
         """
         return f"configuracion->  format: {self.config['format']} || sign: {self.config['signgpg']}" \
-                f" || avoid_optionals: {self.config['avoid_optionals']} \n db : {self.config['db']}" \
+                f" || avoid_optionals: {self.config['avoid_optionals']} \ndb : {self.config['db']}" \
                 f"\ndb url: {self.config['db_url']}"
 
 

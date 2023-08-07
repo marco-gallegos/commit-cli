@@ -128,7 +128,6 @@ class ConfigManager(object):
                 self.config = Configuration(override_config=override_config)
                 self.save_file()
                 return False
-        print("config", self.config)
         return False 
 
     def get_config(self, name: str) -> str or bool or None:
