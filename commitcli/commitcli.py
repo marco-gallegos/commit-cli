@@ -74,6 +74,8 @@ def do_a_commit(nooptionals: bool, onlylog: bool) -> bool:
     message_created:bool = False 
     message_created = create_commit_message(configuration_manager, module_manager, onlylog)
 
+    module_manager
+
     return message_created
 
 
@@ -104,8 +106,5 @@ def create_commit_message(configuration_manager: ConfigManager, module_manager:M
         print(commit_command)
     else:
         os.system(commit_command)
-
-    # update preselected files
-    commit_msg.update_preselected_data()
 
     return True
