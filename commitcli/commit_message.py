@@ -11,7 +11,6 @@ from commitcli.common import changes_choices_by_format, get_questions, get_prese
 
 from configmanager.config_manager import ConfigManager
 from configmanager.format_module_manager import ModuleConfig
-import pendulum
 
 class CommitMessage(object):
     """This clas is a abstraction of a commit message,
@@ -44,6 +43,7 @@ class CommitMessage(object):
         super()
         self.tag = tag
         self.module = module
+        self.moduleId = module
         self.header = header
         self.body = body
         self.footer = footer

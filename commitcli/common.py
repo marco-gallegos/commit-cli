@@ -1,5 +1,6 @@
 from os import name
 import inquirer
+from common.logger import logger
 from configmanager.format_module_manager import ModuleManager, ModuleConfig
 
 class PreselectedQuestion(object):
@@ -18,7 +19,7 @@ def get_preselected_module(moduleManager:ModuleManager) -> dict[str, str]:
     module_options_list:list = []
     
     if module_list and len(module_list) > 0:
-        module_options_temporal_list = [ (x.name, x.name) for x in  module_list ]
+        module_options_temporal_list = [ (x.name, x.id) for x in  module_list ]
 
         module_options_list += module_options_temporal_list
         module_options_list.insert(1,("No, let me write it", "no"))
@@ -29,6 +30,8 @@ def get_preselected_module(moduleManager:ModuleManager) -> dict[str, str]:
         ]
 
         answer = inquirer.prompt(questions)
+
+        logger.log("INFO", answer)
 
     if answer and answer['module'] == 'no':
         answer.pop('module')

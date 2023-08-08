@@ -8,6 +8,7 @@ import re
 import pendulum
 from common.constants import constants
 from io import TextIOWrapper
+import uuid
 
 # new imports
 from pymongo import MongoClient
@@ -23,11 +24,13 @@ class ModuleConfig(object):
     use_count:int
     projectId:str # to filter in formal dbs
 
-    def __init__(self, name:str, date:int = 0, last_used:int = 0, use_count:int = 1) -> None:
+    def __init__(self, name:str, date:int = 0, last_used:int = 0, use_count:int = 1, id:str = None) -> None:
+        self.id:str = uuid.uuid4().hex if id is None else id
         self.name:str = name
         self.date:int = date
         self.last_used:int =  last_used
         self.use_count:int = use_count
+        self.projectId:str = ""
         # print("finish constructing")
 
 
@@ -92,7 +95,7 @@ class LocalFileDb(IModulesRepository):
             return moduleList
         return list()
 
-    def get(self, id:string):
+    def get(self, id:str):
         pass
 
     
