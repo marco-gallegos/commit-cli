@@ -26,15 +26,15 @@ def get_preselected_module(moduleManager:ModuleManager) -> dict[str, str]:
         
         # here we expect a array so we want make a questio
         questions = [
-            inquirer.List(name="module", message="your module is here?", choices=module_options_list)
+            inquirer.List(name="moduleid", message="your module is here?", choices=module_options_list)
         ]
 
         answer = inquirer.prompt(questions)
 
         logger.log("INFO", answer)
 
-    if answer and answer['module'] == 'no':
-        answer.pop('module')
+    if answer and answer['moduleid'] == 'no':
+        answer.pop('moduleid')
        
     return answer
 
@@ -130,7 +130,7 @@ def get_preselected_questions(format:str)-> list:
 
     preselected_questions_by_format:dict[str,dict] = {
         "cc": {
-            "module": PreselectedQuestion("module", get_preselected_module)
+            "moduleid": PreselectedQuestion("module", get_preselected_module)
         }
     }
 

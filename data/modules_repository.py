@@ -25,17 +25,22 @@ class ModuleConfig(object):
     projectId:str # to filter in formal dbs
 
     def __init__(self, name:str, date:int = 0, last_used:int = 0, use_count:int = 1, id:str = None) -> None:
-        self.id:str = uuid.uuid4().hex if id is None else id
+        self.id:str = id
         self.name:str = name
         self.date:int = date
         self.last_used:int =  last_used
         self.use_count:int = use_count
-        self.projectId:str = ""
+        self.projectid:str = ""
         # print("finish constructing")
 
 
     def __str__(self) -> str:
         return f"{self.id} {self.name} {self.date} {self.last_used} {self.use_count}"
+
+    def initId(self):
+        self.id = uuid.uuid4().hex if self.id is None else self.id
+
+
 
 
 # thinked to work as a interface
@@ -45,7 +50,7 @@ class IModulesRepository(ABC):
         pass
 
     @abstractmethod
-    def update(self, modules:list[ModuleConfig]):
+    def update(self, module:ModuleConfig):
         pass
 
 
@@ -70,7 +75,6 @@ class LocalFileDb(IModulesRepository):
         file.close()
         return True
 
-
     def getAll(self) -> List[ModuleConfig]:
         current_file:str = self.db
 
@@ -86,8 +90,8 @@ class LocalFileDb(IModulesRepository):
                     # print(content_as_list[0], content_as_list[1], content_as_list[2], content_as_list[3])
                     try:
                         module:ModuleConfig = ModuleConfig(
-                                content_as_list[0], int(content_as_list[1]),
-                                int(content_as_list[2]), int(content_as_list[3])
+                                content_as_list[1], int(content_as_list[2]),
+                                int(content_as_list[3]), int(content_as_list[4]), content_as_list[0]
                             )
                         moduleList.append(module)
                     except:
@@ -95,8 +99,11 @@ class LocalFileDb(IModulesRepository):
             return moduleList
         return list()
 
-    def get(self, id:str):
-        pass
+    def get(self, id:str) -> ModuleConfig:
+        current_modules:list = self.getAll()
+        current_module = [ module for module in current_modules if module.id == id ]
+        #TODO: convert to ModuleConfig
+        return current_module[0] if len(current_module) > 0 else None 
 
     
     def update(self, module:ModuleConfig):
@@ -109,32 +116,40 @@ class LocalFileDb(IModulesRepository):
                 a - limit number of modules to write to 10
         4 - save the modules infomation
         """
-        # def update_preselected_data(self):
         current_modules:list = self.getAll()
         new_modules:list[ModuleConfig] = []
         current_date = pendulum.now()
         exist_in_module_list:bool = False
+        
+        logger.log("INFO", current_modules)
 
         modules_as_csv:str = ""
         
         if current_modules and len(current_modules) > 0:
             for current_module in current_modules:
-                if current_module.name.lower() == module.name:
+                if current_module.id == module.id:
                     current_module.last_used = current_date.int_timestamp
                     current_module.use_count += 1
                     exist_in_module_list = True
                 new_modules.append(current_module)
         
         if exist_in_module_list is False:
-            new_module = ModuleConfig(module.name, current_date.int_timestamp, current_date.int_timestamp, 1)
+            new_module:ModuleConfig = ModuleConfig(module.name, current_date.int_timestamp, current_date.int_timestamp, 1)
+            new_module.initId()
             new_modules.append(new_module)
 
+        logger.log("INFO", exist_in_module_list)
+
         new_modules.sort(key=lambda module: module.last_used, reverse=True)
+
+        logger.log("INFO", exist_in_module_list)
 
         new_modules = new_modules[0:9:1]
 
         for module in new_modules:
-            modules_as_csv += f"{module.name},{module.date},{module.last_used},{module.use_count}\n"
+            modules_as_csv += f"{module.id},{module.name},{module.date},{module.last_used},{module.use_count},{module.projectid}\n"
+
+        logger.log("INFO", modules_as_csv)
         
         self.write_db(modules_as_csv)
 
@@ -173,7 +188,7 @@ class MongoDbModulesRepository(IModulesRepository):
         logger.log("INFO","returning")
         return module_list
 
-    def update(self, modules: List[ModuleConfig]):
+    def update(self, modules: ModuleConfig):
         modules_collection = self.db["modules"]
         modules_data = []
         for module in modules:
@@ -207,6 +222,6 @@ class ModulesRepository(IModulesRepository):
         return all
         
 
-    def update(self):
-        pass
+    def update(self, module:ModuleConfig):
+        return self.db.update(module)
 

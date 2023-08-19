@@ -13,6 +13,7 @@ import click
 from common.logger import logger
 from common.versions import get_version
 from configmanager.format_module_manager import ModuleManager
+from data.modules_repository import ModuleConfig
 
 
 @click.command()
@@ -71,15 +72,19 @@ def do_a_commit(nooptionals: bool, onlylog: bool) -> bool:
 
     module_manager = ModuleManager(configuration_manager.config)   
 
-    message_created:bool = False 
-    message_created = create_commit_message(configuration_manager, module_manager, onlylog)
-
-    module_manager
-
-    return message_created
+    commit:CommitMessage|None = None
+    commit = create_commit_message(configuration_manager, module_manager, onlylog)
 
 
-def create_commit_message(configuration_manager: ConfigManager, module_manager:ModuleManager, onlylog: bool) -> bool:
+    if onlylog is False:
+        # update messages db
+        empty_module_to_insert:ModuleConfig = ModuleConfig(commit.module, 0, 0, 0, commit.moduleid) 
+        module_manager.update_modules(empty_module_to_insert, empty_module_to_insert.id)
+
+    return True if commit is not None else False
+
+
+def create_commit_message(configuration_manager: ConfigManager, module_manager:ModuleManager, onlylog: bool) -> CommitMessage:
     commit_msg:CommitMessage = CommitMessage(configuration_manager=configuration_manager, module_manager=module_manager)
 
     commit_string:str = None
@@ -87,7 +92,7 @@ def create_commit_message(configuration_manager: ConfigManager, module_manager:M
     try:
         commit_msg.get_answers()
     except KeyboardInterrupt:
-        #BUG: this doesn works
+        #BUG: this doesnt works
         print("cancelling commit.")
     except Exception:
         print("Cancelling commit.")
@@ -96,7 +101,7 @@ def create_commit_message(configuration_manager: ConfigManager, module_manager:M
 
 
     if commit_string is None:
-        return False
+        return None
 
     print("commiting...")
 
@@ -107,4 +112,4 @@ def create_commit_message(configuration_manager: ConfigManager, module_manager:M
     else:
         os.system(commit_command)
 
-    return True
+    return commit_msg

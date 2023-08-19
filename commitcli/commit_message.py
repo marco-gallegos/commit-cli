@@ -11,6 +11,7 @@ from commitcli.common import changes_choices_by_format, get_questions, get_prese
 
 from configmanager.config_manager import ConfigManager
 from configmanager.format_module_manager import ModuleConfig
+from common.logger import logger
 
 class CommitMessage(object):
     """This clas is a abstraction of a commit message,
@@ -22,7 +23,6 @@ class CommitMessage(object):
     
     def __init__(
         self,
-        # format: str = "cc",
         module_manager: ModuleManager,
         configuration_manager: ConfigManager = ConfigManager(),
         tag: str = None,
@@ -43,7 +43,7 @@ class CommitMessage(object):
         super()
         self.tag = tag
         self.module = module
-        self.moduleId = module
+        self.moduleid = None
         self.header = header
         self.body = body
         self.footer = footer
@@ -139,21 +139,32 @@ class CommitMessage(object):
         
         preselected_answers_key_list:list[str] = [ list(key.keys())[0] for key in preselected_answers ]
 
+        logger.log("INFO", preselected_answers)
+
+        logger.log("INFO", preselected_answers_key_list)
+
+        logger.log("INFO", "=====================")
+
+        # -------------- speciaol changes --------------
+        #TODO: change module id to module
+
         # ------ regular question prompting ------------
 
         normal_questions = get_questions(self.format, preselected_answers_key_list, request_optionals)
 
         normal_answers = inquirer.prompt(normal_questions[self.format])
         
-        # print(normal_answers, preselected_answers)
 
         answers:dict = dict()
         for preselected_answer in preselected_answers:
             answers.update(preselected_answer)
-        answers.update(normal_answers)
         
-        # print(answers)
+        logger.log("INFO", normal_answers)
 
+        answers.update(normal_answers)
+
+        logger.log("INFO", answers)
+        
         if answers:
             # TODO: handle optional
             # if self.format in self.optional_questions and not request_optionals:
