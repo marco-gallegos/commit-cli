@@ -14,12 +14,12 @@ def get_preselected_module(moduleManager:ModuleManager) -> dict[str, str]:
     """function to get the preselected Module"""
     # get module lis
     module_list:list[ModuleConfig] = moduleManager.get_modules()
-    answer:dict = {}
+    answers:dict = {}
 
     module_options_list:list = []
     
     if module_list and len(module_list) > 0:
-        module_options_temporal_list = [ (x.name, x.id) for x in  module_list ]
+        module_options_temporal_list:list[tuple[str,str]] = [ (x.name, x.id) for x in  module_list ]
 
         module_options_list += module_options_temporal_list
         module_options_list.insert(1,("No, let me write it", "no"))
@@ -29,14 +29,21 @@ def get_preselected_module(moduleManager:ModuleManager) -> dict[str, str]:
             inquirer.List(name="moduleid", message="your module is here?", choices=module_options_list)
         ]
 
-        answer = inquirer.prompt(questions)
+        answers = inquirer.prompt(questions)
 
-        logger.log("INFO", answer)
+        logger.log("INFO", answers)
 
-    if answer and answer['moduleid'] == 'no':
-        answer.pop('moduleid')
+    if len(answers.keys()) and answers['moduleid'] == 'no':
+        answers.pop('moduleid')
+
+    if len(answers.keys()) > 0:
+
+        if answers["moduleid"]:
+            selected_module:list = [ { "module": module.name } for module in module_list if module.id == answers["moduleid"] ]
+            if len(selected_module) > 0:
+                answers.update(selected_module[0])
        
-    return answer
+    return answers
 
 
 changes_choices_by_format:dict[str,list[tuple]] = {

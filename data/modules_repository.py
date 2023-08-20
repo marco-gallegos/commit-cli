@@ -6,13 +6,9 @@ from configmanager.config import Configuration
 from data.db import GetDatabase
 import re
 import pendulum
-from common.constants import constants
 from io import TextIOWrapper
 import uuid
 
-# new imports
-from pymongo import MongoClient
-# from bson.objectid import ObjectId
 from typing import List
 
 
@@ -47,6 +43,10 @@ class ModuleConfig(object):
 class IModulesRepository(ABC):
     @abstractmethod
     def getAll(self):
+        pass
+    
+    @abstractmethod
+    def get(self, id:str):
         pass
 
     @abstractmethod
@@ -188,6 +188,9 @@ class MongoDbModulesRepository(IModulesRepository):
         logger.log("INFO","returning")
         return module_list
 
+    def get(self, id:str) -> ModuleConfig:
+        pass
+
     def update(self, modules: ModuleConfig):
         modules_collection = self.db["modules"]
         modules_data = []
@@ -220,7 +223,9 @@ class ModulesRepository(IModulesRepository):
     def getAll(self) -> list[ModuleConfig]:
         all = self.db.getAll()
         return all
-        
+
+    def get(self, id:str) -> ModuleConfig:
+        return self.db.get(id)
 
     def update(self, module:ModuleConfig):
         return self.db.update(module)

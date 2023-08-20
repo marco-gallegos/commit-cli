@@ -74,11 +74,12 @@ def do_a_commit(nooptionals: bool, onlylog: bool) -> bool:
 
     commit:CommitMessage|None = None
     commit = create_commit_message(configuration_manager, module_manager, onlylog)
-
-
-    if onlylog is False:
+    
+    if commit is not None:
         # update messages db
-        empty_module_to_insert:ModuleConfig = ModuleConfig(commit.module, 0, 0, 0, commit.moduleid) 
+        empty_module_to_insert:ModuleConfig = ModuleConfig(commit.module, 0, 0, 0, commit.moduleid)
+        logger.log("INFO", "=========================>")
+        logger.log("INFO", empty_module_to_insert)
         module_manager.update_modules(empty_module_to_insert, empty_module_to_insert.id)
 
     return True if commit is not None else False
@@ -97,8 +98,11 @@ def create_commit_message(configuration_manager: ConfigManager, module_manager:M
     except Exception:
         print("Cancelling commit.")
 
+    logger.log("INFO", commit_msg)
+
     commit_string = commit_msg.get_commit_string()
 
+    logger.log("INFO", commit_string)
 
     if commit_string is None:
         return None

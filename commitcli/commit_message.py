@@ -88,6 +88,7 @@ class CommitMessage(object):
             answers (dict): answers provided by the user
         """
         if answers:
+            # platform specific fixes
             if self.format == 'odoo':
                 self.tag = answers['tag']
                 self.module = answers['module']
@@ -105,6 +106,10 @@ class CommitMessage(object):
                     self.body = answers['body']
                 if 'footer' in answers:
                     self.footer = answers['footer']
+            
+            if 'moduleid' in answers.keys() and answers['moduleid'] :
+                logger.log("INFO", f"seting module id {answers['moduleid']}")
+                self.moduleid = answers['moduleid']
             return True
         else:
             return False
@@ -117,9 +122,11 @@ class CommitMessage(object):
         preselected_questions:list[PreselectedQuestion] = get_preselected_questions(format=self.format)
         
         for preselected_question in preselected_questions:
-            question = preselected_question.get_value(self.module_manager) 
-            if question :
-                preselected_answers.append(question)
+            # this calls a functions asigned to get_value
+            answer:dict = preselected_question.get_value(self.module_manager) 
+            if len(answer.keys()) > 0 :
+                for key in answer.keys():
+                    preselected_answers.append({ key: answer[key] })
         
         return preselected_answers
 
@@ -134,6 +141,7 @@ class CommitMessage(object):
 
         # if we had preselected result then we can get them here
         preselected_answers:list[dict] = self.get_preselected_answers()
+
         # ------ automatic answers segregation and formating ---------
         request_optionals:bool = True if self.config.get_config("avoid_optionals") else False 
         
@@ -141,13 +149,9 @@ class CommitMessage(object):
 
         logger.log("INFO", preselected_answers)
 
-        logger.log("INFO", preselected_answers_key_list)
-
         logger.log("INFO", "=====================")
 
         # -------------- speciaol changes --------------
-        #TODO: change module id to module
-
         # ------ regular question prompting ------------
 
         normal_questions = get_questions(self.format, preselected_answers_key_list, request_optionals)
@@ -166,14 +170,6 @@ class CommitMessage(object):
         logger.log("INFO", answers)
         
         if answers:
-            # TODO: handle optional
-            # if self.format in self.optional_questions and not request_optionals:
-                # for question in self.optional_questions[self.format]:
-                    # set_question = input(f"set the {question.name} (y,*): ")
-                    # if set_question.lower() == 'y':
-                        # temp_dict = inquirer.prompt({question})
-                        # answers.update(temp_dict)
-            # after optional question handling make a update
             self.set_answers(answers)
 
 
@@ -191,7 +187,10 @@ class CommitMessage(object):
         elif self.format == "sgc":
             return False
         elif self.format == "cc":
-            return self.tag and self.header
+            logger.log("INFO", self.format)
+            cc_format_minimum_requirements:bool = len(self.tag) > 0 and len(self.header) > 0
+            logger.log("INFO", cc_format_minimum_requirements)
+            return cc_format_minimum_requirements
         else:
             return False
     
