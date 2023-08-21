@@ -43,7 +43,7 @@ class CommitMessage(object):
         super()
         self.tag = tag
         self.module = module
-        self.moduleid = None
+        self.moduleid = None # module id only set when answer comes from preselected answers
         self.header = header
         self.body = body
         self.footer = footer

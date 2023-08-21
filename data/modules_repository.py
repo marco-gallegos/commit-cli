@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
 from pymongo.database import Database
+from bson.objectid import ObjectId
 from common.logger import logger
 from configmanager.config import Configuration
 from data.db import GetDatabase
@@ -18,23 +19,30 @@ class ModuleConfig(object):
     date:int
     last_used:int
     use_count:int
-    projectId:str # to filter in formal dbs
+    projectid:str # to filter in formal dbs
 
-    def __init__(self, name:str, date:int = 0, last_used:int = 0, use_count:int = 1, id:str = None) -> None:
+    def __init__(self, name:str, date:int = 0, last_used:int = 0, use_count:int = 1, id:str = None, projectid:str = None) -> None:
         self.id:str = id
         self.name:str = name
         self.date:int = date
         self.last_used:int =  last_used
         self.use_count:int = use_count
-        self.projectid:str = ""
-        # print("finish constructing")
-
+        self.projectid:str = projectid if projectid is not None else None
 
     def __str__(self) -> str:
         return f"{self.id} {self.name} {self.date} {self.last_used} {self.use_count}"
 
     def initId(self):
         self.id = uuid.uuid4().hex if self.id is None else self.id
+
+    def get_as_db_row(self):
+        return {
+            "name": self.name,
+            "date": self.date,
+            "last_used": self.last_used,
+            "use_count": self.use_count,
+            "projectid": self.projectid,
+        }
 
 
 
@@ -116,7 +124,7 @@ class LocalFileDb(IModulesRepository):
                 a - limit number of modules to write to 10
         4 - save the modules infomation
         """
-        current_modules:list = self.getAll()
+        current_modules:list[ModuleConfig] = self.getAll()
         new_modules:list[ModuleConfig] = []
         current_date = pendulum.now()
         exist_in_module_list:bool = False
@@ -163,48 +171,51 @@ class MongoDbModulesRepository(IModulesRepository):
     def __init__(self, config: Configuration) -> None:
         # super().__init__()
         self.db:Database = GetDatabase(config)
+        self.config:Configuration = config
         logger.log("INFO", self.db)
 
     def getAll(self) -> List[ModuleConfig]:
         modules_collection = self.db["modules"]
         logger.log("INFO", modules_collection)
-        all_modules = modules_collection.find()
+        all_modules = modules_collection.find(
+            {
+                "projectid": self.config.config.projectid
+            }
+        )
 
-        logger.log("INFO", all_modules)
         module_list = []
-        for module_doc in modules_collection.find():
-            logger.log("INFO", "module")
+        for module_doc in all_modules:
+            logger.log("INFO", "module ->")
+            logger.log("INFO", module_doc)
             try:
                 module = ModuleConfig(
                     module_doc["name"],
                     int(module_doc["date"]),
                     int(module_doc["last_used"]),
-                    int(module_doc["use_count"])
+                    int(module_doc["use_count"]),
+                    str(module_doc["_id"])
                 )
                 module_list.append(module)
             except Exception as e:
                 print("Error parsing document:", e)
-        
-        logger.log("INFO","returning")
         return module_list
 
     def get(self, id:str) -> ModuleConfig:
         pass
 
-    def update(self, modules: ModuleConfig):
+    def update(self, module: ModuleConfig):
         modules_collection = self.db["modules"]
-        modules_data = []
-        for module in modules:
-            module_data = {
-                "field1": module.field1,
-                "field2": module.field2,
-                "field3": module.field3,
-                "field4": module.field4
-            }
-            modules_data.append(module_data)
+        module.use_count += 1
 
-        result = modules_collection.insert_many(modules_data)
-        return result.inserted_ids
+        if module.id is not None:
+            logger.log("INFO", f"updating module -> {module.id}")
+            logger.log("INFO", module.get_as_db_row())
+            modules_collection.update_one({"_id": ObjectId(module.id)}, {"$set": module.get_as_db_row()})
+        else:
+            logger.log("INFO", f"creating module {module.name}")
+            logger.log("INFO", module.get_as_db_row())
+            module_new = modules_collection.insert_one(module.get_as_db_row())
+        return True
 # ===================================================================
 
 

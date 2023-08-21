@@ -26,10 +26,10 @@ def get_first_commit_id(repo_path:str):
     return first_commit.id.hex
 
 
-def get_module_id() -> str:
+def get_project_id() -> str:
     repo_path = get_git_root()
     logger.log("INFO", repo_path)
     first_commit:str = get_first_commit_id(repo_path)
     logger.log("INFO", first_commit)
-    return f"{repo_path}{first_commit}"
+    return f"{first_commit}"
 

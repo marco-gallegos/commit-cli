@@ -14,6 +14,7 @@ from common.logger import logger
 from common.versions import get_version
 from configmanager.format_module_manager import ModuleManager
 from data.modules_repository import ModuleConfig
+import pendulum
 
 
 @click.command()
@@ -76,11 +77,17 @@ def do_a_commit(nooptionals: bool, onlylog: bool) -> bool:
     commit = create_commit_message(configuration_manager, module_manager, onlylog)
     
     if commit is not None:
-        # update messages db
-        empty_module_to_insert:ModuleConfig = ModuleConfig(commit.module, 0, 0, 0, commit.moduleid)
+        new_module:ModuleConfig
+        current_date = pendulum.now()
+        if commit.moduleid is not None:
+            stored_module:ModuleConfig = module_manager.get(commit.moduleid)
+            new_module = ModuleConfig(commit.module, stored_module.date, current_date.int_timestamp, stored_module.use_count, commit.moduleid, configuration_manager.config.config.projectid)
+        else:
+            new_module = ModuleConfig(commit.module, 0, 0, 0, commit.moduleid, configuration_manager.config.config.projectid)
+
         logger.log("INFO", "=========================>")
-        logger.log("INFO", empty_module_to_insert)
-        module_manager.update_modules(empty_module_to_insert, empty_module_to_insert.id)
+        logger.log("INFO", new_module)
+        module_manager.update_modules(new_module, new_module.id)
 
     return True if commit is not None else False
 
@@ -117,3 +124,4 @@ def create_commit_message(configuration_manager: ConfigManager, module_manager:M
         os.system(commit_command)
 
     return commit_msg
+

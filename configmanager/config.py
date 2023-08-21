@@ -6,6 +6,7 @@
     Configuration is a class to contain and validate the configuration
 """
 import os
+from common.functions import get_project_id
 
 class TypeConfigurationConfig(object):
     format:str
@@ -17,6 +18,7 @@ class TypeConfigurationConfig(object):
     db_name:str
     db_user:str
     db_password:str
+    projectid:str
     
     def __init__(self, format='cc', signgpg=False, avoid_optionals=False,
                  db='localfile', db_url='localhost', db_port='27017', db_name='commitcli',
@@ -30,6 +32,7 @@ class TypeConfigurationConfig(object):
         self.db_name = db_name
         self.db_user = db_user
         self.db_password = db_password
+        self.projectid = get_project_id()
 
     def __getitem__(self, clave):
         if hasattr(self, clave):
