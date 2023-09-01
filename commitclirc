@@ -8,7 +8,7 @@ signgpg=False
 #db configuration
 db=localfile
 db_url=localhost
-db_port=112233
+db_port=27017
 db_name=commitcli
 #db_user=none
 #db_password=none

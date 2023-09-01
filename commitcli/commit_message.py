@@ -188,7 +188,7 @@ class CommitMessage(object):
             return False
         elif self.format == "cc":
             logger.log("INFO", self.format)
-            cc_format_minimum_requirements:bool = len(self.tag) > 0 and len(self.header) > 0
+            cc_format_minimum_requirements:bool = self.tag and len(self.tag) > 0 and len(self.header) > 0
             logger.log("INFO", cc_format_minimum_requirements)
             return cc_format_minimum_requirements
         else:

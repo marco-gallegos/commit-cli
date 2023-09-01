@@ -139,7 +139,15 @@ class Configuration(object):
             "#supported formats free, odoo, sgc(semantic git commits) and cc (conventional commits)\n"\
             "format={format}\n\n"\
             "#Option to sign the commits o every commit, must be True or False\n"\
-            "signgpg={sign}"\
+            "signgpg={sign}\n"\
+            "\n"\
+            "#db configuration\n"\
+            "db=localfile\n"\
+            "db_url=localhost\n"\
+            "db_port=27017\n"\
+            "db_name=commitcli\n"\
+            "db_user=\n"\
+            "db_password="\
         
         if filled:
             return file_template.format(format=self.config['format'], sign=self.config['signgpg'])

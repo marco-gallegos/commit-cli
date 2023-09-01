@@ -15,16 +15,43 @@ def get_git_root():
     else:
         return None
 
-def get_first_commit_id(repo_path:str):
+# def get_first_commit_id(repo_path:str):
+    # # Abrir el repositorio
+    # repo = pygit2.Repository(repo_path)
+
+    # # Obtener el primer commit
+    # first_commit = next(repo.walk(repo.head.target, pygit2.GIT_SORT_TOPOLOGICAL))
+
+    # # Devolver el ID del primer commit como un string hexadecimal
+    # return first_commit.id.hex
+
+def get_first_commit_id(repo_path: str):
     # Abrir el repositorio
     repo = pygit2.Repository(repo_path)
 
-    # Obtener el primer commit
-    first_commit = next(repo.walk(repo.head.target, pygit2.GIT_SORT_TOPOLOGICAL))
+    # Obtener la referencia a la rama principal (puede ser "master" o "main")
+
+    main_branch_ref = None
+
+    try:
+        main_branch_ref = repo.lookup_reference('refs/heads/master')
+    except:
+        pass
+    
+    if main_branch_ref is None:
+        try:
+            main_branch_ref = repo.lookup_reference('refs/heads/main')
+        except Exception as e:
+            pass
+
+    if not main_branch_ref:
+        return None  # No se encontró la rama principal
+
+    # Obtener el primer commit en la rama principal
+    first_commit = next(repo.walk(main_branch_ref.target, pygit2.GIT_SORT_TOPOLOGICAL))
 
     # Devolver el ID del primer commit como un string hexadecimal
     return first_commit.id.hex
-
 
 def get_project_id() -> str:
     repo_path = get_git_root()
