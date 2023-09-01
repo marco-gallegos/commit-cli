@@ -38,6 +38,7 @@ setuptools.setup(
         'loguru',
         'pendulum',
         'pygit2',
+        'pymongo',
         'python-dotenv',
     ],
     # hacer que setup tools genere un comando cli

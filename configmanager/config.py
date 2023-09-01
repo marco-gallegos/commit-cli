@@ -71,6 +71,7 @@ class Configuration(object):
             self.config['db'] = config['db'].lower() if 'db' in config else self.config['db']
             self.config['db_url'] = config['db_url'].lower() if 'db_url' in config else self.config['db_url']
             self.config['db_port'] = config['db_port'] if 'db_port' in config else self.config["db_port"]
+            self.config['db_name'] = config['db_name'] if 'db_name' in config else self.config["db_name"]
             self.config['db_user'] = config['db_user'] if 'db_user' in config else self.config['db_user']
             self.config['db_password'] = config['db_password'] if 'db_password' in config else self.config['db_password']
 
