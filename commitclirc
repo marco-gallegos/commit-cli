@@ -1,0 +1,14 @@
+#Format for every commit
+#supported formats free, odoo, sgc(semantic git commits) and cc (conventional commits)
+format=cc
+
+#Option to sign the commits o every commit, must be True or False
+signgpg=False
+
+#db configuration
+db=localfile
+db_url=localhost
+db_port=112233
+db_name=commitcli
+#db_user=none
+#db_password=none
