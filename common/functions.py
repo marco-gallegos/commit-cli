@@ -15,16 +15,6 @@ def get_git_root():
     else:
         return None
 
-# def get_first_commit_id(repo_path:str):
-    # # Abrir el repositorio
-    # repo = pygit2.Repository(repo_path)
-
-    # # Obtener el primer commit
-    # first_commit = next(repo.walk(repo.head.target, pygit2.GIT_SORT_TOPOLOGICAL))
-
-    # # Devolver el ID del primer commit como un string hexadecimal
-    # return first_commit.id.hex
-
 def get_first_commit_id(repo_path: str):
     # Abrir el repositorio
     repo = pygit2.Repository(repo_path)
