@@ -182,9 +182,7 @@ class MongoDbModulesRepository(IModulesRepository):
                 {
                     "projectid": self.config.config.projectid
                 }
-            ).sort({
-                "use_count":1,
-            })
+            ).sort([("use_count", pymongo.DESCENDING)])
         except:
             all_modules = []
 
