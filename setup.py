@@ -47,6 +47,6 @@ setuptools.setup(
     },
 
     ## test this new code
-    package_data={'': ['commitclirc']}, # just to add this template file and us it instead hardcoding it
-    include_package_data=True,
+    # package_data={'': ['commitclirc']}, # just to add this template file and us it instead hardcoding it
+    # include_package_data=True,
 )
