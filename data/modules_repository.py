@@ -182,7 +182,9 @@ class MongoDbModulesRepository(IModulesRepository):
                 {
                     "projectid": self.config.config.projectid
                 }
-            )
+            ).sort({
+                "use_count":1,
+            })
         except:
             all_modules = []
 
