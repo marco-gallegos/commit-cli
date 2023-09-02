@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
 from pymongo.database import Database
+import pymongo
 from bson.objectid import ObjectId
 from common.logger import logger
 from configmanager.config import Configuration
@@ -176,12 +177,14 @@ class MongoDbModulesRepository(IModulesRepository):
 
     def getAll(self) -> List[ModuleConfig]:
         modules_collection = self.db["modules"]
-        logger.log("INFO", modules_collection)
-        all_modules = modules_collection.find(
-            {
-                "projectid": self.config.config.projectid
-            }
-        )
+        try:
+            all_modules = modules_collection.find(
+                {
+                    "projectid": self.config.config.projectid
+                }
+            )
+        except:
+            all_modules = []
 
         module_list = []
         for module_doc in all_modules:

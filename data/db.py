@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+import pymongo
 from pymongo.database import Database
 from configmanager.config import Configuration
 from common.constants import constants
@@ -46,8 +47,12 @@ def returnFileDb() -> str:
 
 def MongoDb(config:Configuration) -> Database:
     '''This return the full file path'''
-    db_client:MongoClient = MongoClient(host=config.config.db_url, port=int(config.config.db_port))
-    db:Database = db_client[config.config.db_name]
+    try:
+        db_client:MongoClient = MongoClient(host=config.config.db_url, port=int(config.config.db_port), timeoutMS=0, connect=True)
+        db:Database = db_client[config.config.db_name]
+    except Exception as e:
+        db = None
+        print("could not connect mongodb")
     return db
 
 

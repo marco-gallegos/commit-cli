@@ -44,5 +44,9 @@ setuptools.setup(
     # hacer que setup tools genere un comando cli
     entry_points={
         'console_scripts': ['commitcli=commitcli.commitcli:main'],
-    }
+    },
+
+    ## test this new code
+    package_data={'': ['commitclirc']}, # just to add this template file and us it instead hardcoding it
+    include_package_data=True,
 )

@@ -11,7 +11,10 @@ class ModuleManager(object):
 
     def __init__(self, config:Configuration) -> None:
         self.repository = ModulesRepository(config)
-        self.modules:list[ModuleConfig] = self.repository.getAll()
+        try:
+            self.modules:list[ModuleConfig] = self.repository.getAll()
+        except:
+            self.modules = []
 
     def update_modules(self, data:ModuleConfig, id:str=None):
         return self.repository.update(data)
