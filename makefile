@@ -37,4 +37,5 @@ watch:
 		nodemon --watch . --ext py --exec "clear && echo 'Executing $(SCRIPT)...' && python3 $(SCRIPT)"; \
 	fi
 
-
+docker39:
+	@docker-compose run myapp bash
