@@ -1,11 +1,13 @@
+from __future__ import annotations #to make it work on 3.9 or lower
+
 from pymongo import MongoClient
-import pymongo
 from pymongo.database import Database
 from configmanager.config import Configuration
 from common.constants import constants
 import pygit2
 import os
-from common.logger import logger
+# from common.logger import logger
+
 
 def get_git_root():
     try:

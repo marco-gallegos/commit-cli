@@ -182,7 +182,7 @@ class MongoDbModulesRepository(IModulesRepository):
                 {
                     "projectid": self.config.config.projectid
                 }
-            ).sort([("use_count", pymongo.DESCENDING)])
+            ).sort([("last_used", pymongo.DESCENDING)])
         except:
             all_modules = []
 
@@ -209,6 +209,9 @@ class MongoDbModulesRepository(IModulesRepository):
     def update(self, module: ModuleConfig):
         modules_collection = self.db["modules"]
         module.use_count += 1
+        current_date = pendulum.now()
+
+        module.last_used = current_date.int_timestamp
 
         if module.id is not None:
             logger.log("INFO", f"updating module -> {module.id}")
@@ -217,6 +220,7 @@ class MongoDbModulesRepository(IModulesRepository):
         else:
             logger.log("INFO", f"creating module {module.name}")
             logger.log("INFO", module.get_as_db_row())
+            module.date = current_date.int_timestamp
             module_new = modules_collection.insert_one(module.get_as_db_row())
         return True
 # ===================================================================
