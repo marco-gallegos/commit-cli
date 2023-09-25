@@ -1,3 +1,4 @@
+from __future__ import annotations
 from abc import ABC, abstractmethod
 
 from pymongo.database import Database
@@ -10,25 +11,28 @@ import re
 import pendulum
 from io import TextIOWrapper
 import uuid
-
 from typing import List
 
 
 class ModuleConfig(object):
-    id:str
+    id:str|None
     name:str
+    description:str|None
     date:int
     last_used:int
     use_count:int
-    projectid:str # to filter in formal dbs
+    projectid:str|None # to filter in formal dbs
 
-    def __init__(self, name:str, date:int = 0, last_used:int = 0, use_count:int = 1, id:str = None, projectid:str = None) -> None:
-        self.id:str = id
-        self.name:str = name
-        self.date:int = date
-        self.last_used:int =  last_used
-        self.use_count:int = use_count
-        self.projectid:str = projectid if projectid is not None else None
+    def __init__(
+            self, name:str, date:int = 0, last_used:int = 0, use_count:int = 1,
+            id:str|None = None, projectid:str|None = None, description:str|None = None) -> None:
+        self.id = id
+        self.name = name
+        self.description = description
+        self.date = date
+        self.last_used =  last_used
+        self.use_count = use_count
+        self.projectid = projectid if projectid is not None else None
 
     def __str__(self) -> str:
         return f"{self.id} {self.name} {self.date} {self.last_used} {self.use_count}"
@@ -190,13 +194,16 @@ class MongoDbModulesRepository(IModulesRepository):
         for module_doc in all_modules:
             logger.log("INFO", "module ->")
             logger.log("INFO", module_doc)
+
             try:
                 module = ModuleConfig(
                     module_doc["name"],
                     int(module_doc["date"]),
                     int(module_doc["last_used"]),
                     int(module_doc["use_count"]),
-                    str(module_doc["_id"])
+                    str(module_doc["_id"]),
+                    None,
+                    str(module_doc["description"]) if "description" in module_doc else None
                 )
                 module_list.append(module)
             except Exception as e:

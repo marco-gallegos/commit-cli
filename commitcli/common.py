@@ -19,7 +19,7 @@ def get_preselected_module(moduleManager:ModuleManager) -> dict[str, str]:
     module_options_list:list = []
     
     if module_list and len(module_list) > 0:
-        module_options_temporal_list:list[tuple[str,str]] = [ (x.name, x.id) for x in  module_list ]
+        module_options_temporal_list:list[tuple[str,str]] = [ (f"{x.name}{'- ' + x.description if x.description is not None else ''}", x.id) for x in  module_list ]
 
         module_options_list += module_options_temporal_list
         module_options_list.insert(1,("No, let me write it", "no"))
