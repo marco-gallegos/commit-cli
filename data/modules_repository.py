@@ -35,19 +35,24 @@ class ModuleConfig(object):
         self.projectid = projectid if projectid is not None else None
 
     def __str__(self) -> str:
-        return f"{self.id} {self.name} {self.date} {self.last_used} {self.use_count}"
+        return f"{self.id} {self.name} {self.date} {self.last_used} {self.use_count} {self.description}"
 
     def initId(self):
         self.id = uuid.uuid4().hex if self.id is None else self.id
 
     def get_as_db_row(self):
-        return {
+        db_row = {
             "name": self.name,
             "date": self.date,
             "last_used": self.last_used,
             "use_count": self.use_count,
             "projectid": self.projectid,
         }
+
+        if self.description is not None:
+            db_row["description"] = self.description
+
+        return db_row
 
 
 
@@ -202,8 +207,8 @@ class MongoDbModulesRepository(IModulesRepository):
                     int(module_doc["last_used"]),
                     int(module_doc["use_count"]),
                     str(module_doc["_id"]),
-                    None,
-                    str(module_doc["description"]) if "description" in module_doc else None
+                    str(module_doc["projectid"]) if "projectid" in module_doc else None,
+                    str(module_doc["description"]) if "description" in module_doc else None,
                 )
                 module_list.append(module)
             except Exception as e:

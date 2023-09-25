@@ -6,6 +6,7 @@
     This file conatains a function to build a commit message using a
     terminal menu
 """
+from __future__ import annotations
 import os
 from commitcli.commit_message import CommitMessage
 from configmanager.config_manager import ConfigManager
@@ -21,13 +22,31 @@ import pendulum
 @click.option('-nop', '--nooptionals', required=False, is_flag=True, help='Do not ask for optional questions')
 @click.option('-log', '--onlylog', required=False, is_flag=True, help="Avoid confirmimg the message only make a lopg from the final message" )
 @click.option('-v', '--version', required=False, is_flag=True, help="Show the current version" )
-def main(nooptionals: bool, onlylog: bool, version: bool) -> bool:
+@click.option('-md', '--moduledescription', required=False, help="set a description to a selected module (just mongo for now)" )
+def main(nooptionals: bool, onlylog: bool, version: bool, moduledescription:bool|None) -> bool:
     """Main funtion on this module is implemented to handle a cli call """
+    print(moduledescription)
     if version is True:
         get_current_version()
+    elif moduledescription is not None:
+        set_module_description(moduledescription)
     else:
         do_a_commit(nooptionals, onlylog)
     return True
+
+
+def set_module_description(description:str):
+    """set a description to the last used module"""
+    configuration_manager:ConfigManager = ConfigManager()
+    module_manager = ModuleManager(configuration_manager.config)
+    last_used_modules:list[ModuleConfig] = module_manager.get_modules()
+
+    if len(last_used_modules) > 0 :
+        current_module:ModuleConfig = last_used_modules[0]
+        current_module.description = description
+        module_manager.update_modules(current_module)
+    else:
+        print("No mudules found.")
 
 
 def get_current_version():
