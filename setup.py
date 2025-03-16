@@ -13,7 +13,7 @@ import setuptools
 
 setuptools.setup(
     name="commitcli",
-    version="1.5.1",
+    version="1.5.2",
     author="Marco A. Gallegos",
     author_email="ma_galeza@hotmail.com",
     description="commit cli for git with some formats, by default conventional commits",
