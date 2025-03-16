@@ -12,7 +12,7 @@
 import setuptools
 from common.versions import get_version 
 
-with open("readme.md", "r") as fh:
+with open("README.md", "r") as fh:
     long_description = fh.read()
     fh.close()
 
