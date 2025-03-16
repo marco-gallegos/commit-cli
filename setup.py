@@ -7,6 +7,8 @@
     how to use:
     compile ->  python3 setup.py sdist bdist_wheel
 """
+# TODO: this is deprecated, use pyproject instead
+
 import setuptools
 from common.versions import get_version 
 
@@ -19,7 +21,7 @@ setuptools.setup(
     version=get_version(),
     author="Marco A. Gallegos",
     author_email="ma_galeza@hotmail.com",
-    description="commit cli for git with some formats, by default short version of odoo format",
+    description="commit cli for git with some formats, by default conventional commits",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/marco-gallegos/commit-cli",
