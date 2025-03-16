@@ -26,7 +26,7 @@ upload:
 	@twine upload dist/*
 
 installdevtools:
-	@pip3 install twine -U
+	@pip3 install twine -U --break-system-packages
 	@npm i -g nodemon
 
 watch:
