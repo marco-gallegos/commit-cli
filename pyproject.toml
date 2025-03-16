@@ -1,6 +1,6 @@
 [project]
 name = "commitcli"
-version = "1.5.3"
+version = "1.5.4"
 description = "Add your description here"
 license ={ text = "MIT" }
 readme = "README.md"
