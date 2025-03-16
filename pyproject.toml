@@ -2,6 +2,7 @@
 name = "commitcli"
 version = "1.5.1"
 description = "Add your description here"
+license ={ text = "MIT" }
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
@@ -11,7 +12,7 @@ dependencies = [
     'pendulum',
     'pygit2',
     'pymongo',
-    'python-dotenv',
+    'python-dotenv'
 ]
 
 [build-system]

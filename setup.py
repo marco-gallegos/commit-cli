@@ -10,20 +10,15 @@
 # TODO: this is deprecated, use pyproject instead
 
 import setuptools
-from common.versions import get_version 
-
-with open("README.md", "r") as fh:
-    long_description = fh.read()
-    fh.close()
 
 setuptools.setup(
     name="commitcli",
-    version=get_version(),
+    version="1.5.1",
     author="Marco A. Gallegos",
     author_email="ma_galeza@hotmail.com",
     description="commit cli for git with some formats, by default conventional commits",
-    long_description=long_description,
-    long_description_content_type="text/markdown",
+    # long_description=long_description,
+    # long_description_content_type="text/markdown",
     url="https://github.com/marco-gallegos/commit-cli",
     license="MIT",
     keywords="cli,cc,commit,git,odoo,github,gitlab,bitbucket,conventional commits, semantic commits",
