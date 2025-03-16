@@ -10,7 +10,7 @@ dependencies = [
     'click',
     'loguru',
     'pendulum',
-    'pygit2',
+    'pygit2==1.13.0',
     'pymongo',
     'python-dotenv'
 ]
