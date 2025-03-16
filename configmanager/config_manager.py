@@ -5,7 +5,6 @@
 @Description
     The config manager is a class to manage the configuration file by default in ~/.commitclirc
 """
-import distutils.util
 import os
 import pathlib
 import re
@@ -14,6 +13,9 @@ from loguru import logger
 
 from configmanager.config import Configuration
 
+# TODO: move tyo a better place
+def str_to_bool(s):
+    return s.lower() in {'true', '1', 't', 'y', 'yes', 'on'}
 
 class ConfigManager(object):
     # data
@@ -92,7 +94,7 @@ class ConfigManager(object):
                 file_line = file_line.replace('\n', '')
                 key, value = self.stringline_to_key_value(string_line=file_line)
                 if value == "False" or value == "True" or value == "false" or value == "true":
-                    value = bool(distutils.util.strtobool(value.lower()))
+                    value = str_to_bool(value)
                 if key is not None and value is not None:
                     data_dict[key] = value
             return data_dict

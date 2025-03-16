@@ -10,4 +10,3 @@ python-dotenv
 pendulum
 pygit2
 pymongo
-setuptools
