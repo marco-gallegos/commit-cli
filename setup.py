@@ -20,7 +20,7 @@ setuptools.setup(
     # long_description=long_description,
     # long_description_content_type="text/markdown",
     url="https://github.com/marco-gallegos/commit-cli",
-    license="MIT",
+    license="MIT", # TODO: deprecated
     keywords="cli,cc,commit,git,odoo,github,gitlab,bitbucket,conventional commits, semantic commits",
     packages=setuptools.find_packages(),
     classifiers=[
@@ -29,6 +29,7 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.8',
+    #TODO: this is deprecated, use pyproject instead just works using makefile not uv
     install_requires=[
         'inquirer',
         'click',
@@ -38,7 +39,7 @@ setuptools.setup(
         'pymongo',
         'python-dotenv',
     ],
-    # hacer que setup tools genere un comando cli
+    # hacer que setup tools genere un comando cli -> deprecated use pyproject instead
     entry_points={
         'console_scripts': ['commitcli=commitcli.commitcli:main'],
     },
