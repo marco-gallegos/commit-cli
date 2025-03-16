@@ -1,0 +1,19 @@
+[project]
+name = "commitcli"
+version = "1.5.1"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    'inquirer',
+    'click',
+    'loguru',
+    'pendulum',
+    'pygit2',
+    'pymongo',
+    'python-dotenv',
+]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
