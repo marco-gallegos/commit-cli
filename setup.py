@@ -13,7 +13,7 @@ import setuptools
 
 setuptools.setup(
     name="commitcli",
-    version="1.5.4",
+    version="1.5.5",
     author="Marco A. Gallegos",
     author_email="ma_galeza@hotmail.com",
     description="commit cli for git with some formats, by default conventional commits",
@@ -28,7 +28,7 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires='>=3.8',
+    python_requires='>=3.12',
     #TODO: this is deprecated, use pyproject instead just works using makefile not uv
     install_requires=[
         'inquirer',
