@@ -72,13 +72,32 @@ db_name=commitcli
 
 ## Installation
 
-### 1 - Install the package
+### pre requisites
+
+i just need to install libgit2 to make it work
+
+#### ubuntu
+
+```shell
+sudo nala install libgit2-dev
+```
+
+### 1 - UV
+
+```shell
+uv tool install commitcli
+```
+
+### 2 - PIP
 
 note : use sudo if the local (user) python bin dir is not in the path
 
 ```shell
 sudo pip install commitcli
 ```
+
+
+### Final - Config and enjoy
 
 example content of the `.commitclirc` file:
 ```shell
@@ -101,8 +120,6 @@ signgpg=False
 ```
 
 save this file and add to your git repository and every comand will use cc format on this project.
-
-### 2 - Enjoy
 
 Add files to commit
 
